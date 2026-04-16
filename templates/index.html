@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QRCard — Tarjetas digitales para negocios</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">
+      <div class="brand-logo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+      </div>
+      QRCard
+    </a>
+    <div class="navbar-links">
+      <a href="#como-funciona" class="nav-link">Cómo funciona</a>
+      <a href="/admin" class="nav-link">Admin</a>
+      <a href="#form" class="btn btn-sm-primary">Crear tarjeta gratis</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Gratis · Sin registro · Listo en 2 minutos
+      </div>
+      <h1>La tarjeta de presentación<br>del <span class="gradient-text">siglo XXI</span></h1>
+      <p>Crea tu perfil digital con código QR. Tus clientes escanean y acceden a toda tu información al instante.</p>
+      <div class="hero-cta">
+        <a href="#form" class="btn btn-primary btn-lg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+          Crear mi QR Card gratis
+        </a>
+        <a href="#como-funciona" class="btn btn-ghost btn-lg">Ver demo →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>100%</strong><span>Gratis</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>2 min</strong><span>Para crear</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>∞</strong><span>Escaneos</span></div>
+      </div>
+    </div>
+
+    <!-- MOCKUP -->
+    <div class="hero-visual">
+      <div class="mockup-card">
+        <div class="mockup-card-inner">
+          <div class="mockup-logo-placeholder">A</div>
+          <div class="mockup-lines">
+            <div class="ml ml-title"></div>
+            <div class="ml ml-sub"></div>
+            <div class="ml ml-info"></div>
+            <div class="ml ml-info short"></div>
+          </div>
+          <div class="mockup-qr">
+            <svg viewBox="0 0 21 21" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0" y="0" width="9" height="9" rx="1.5"/>
+              <rect x="12" y="0" width="9" height="9" rx="1.5"/>
+              <rect x="0" y="12" width="9" height="9" rx="1.5"/>
+              <rect x="2" y="2" width="5" height="5" rx="0.5" fill="white"/>
+              <rect x="14" y="2" width="5" height="5" rx="0.5" fill="white"/>
+              <rect x="2" y="14" width="5" height="5" rx="0.5" fill="white"/>
+              <rect x="3.5" y="3.5" width="2" height="2" rx="0.3" fill="#6366f1"/>
+              <rect x="15.5" y="3.5" width="2" height="2" rx="0.3" fill="#6366f1"/>
+              <rect x="3.5" y="15.5" width="2" height="2" rx="0.3" fill="#6366f1"/>
+              <rect x="12" y="12" width="2" height="2"/><rect x="15" y="12" width="2" height="2"/>
+              <rect x="18" y="12" width="3" height="2"/><rect x="12" y="15" width="2" height="2"/>
+              <rect x="15" y="15" width="5" height="2"/><rect x="12" y="18" width="5" height="3"/>
+              <rect x="18" y="18" width="3" height="3"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mockup-glow"></div>
+      </div>
+      <div class="mockup-phone">
+        <div class="phone-screen">
+          <div class="phone-profile-avatar">A</div>
+          <div class="phone-profile-name"></div>
+          <div class="phone-profile-badge"></div>
+          <div class="phone-contact-item"></div>
+          <div class="phone-contact-item"></div>
+          <div class="phone-contact-item"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" id="como-funciona">
+    <div class="how-inner">
+      <div class="section-label">Cómo funciona</div>
+      <h2>Tres pasos, listo</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-icon">📝</div>
+          <h3>Completa tu perfil</h3>
+          <p>Nombre, contacto, logo y redes sociales de tu negocio.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-icon">⚡</div>
+          <h3>Obtén tu QR Card</h3>
+          <p>Descarga e imprime tu tarjeta con el código QR único.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-icon">📱</div>
+          <h3>Clientes te encuentran</h3>
+          <p>Escanean el QR y ven toda tu info desde su celular.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section class="form-section" id="form">
+    <div class="form-section-inner">
+      <div class="form-section-header">
+        <div class="section-label">Empieza ahora</div>
+        <h2>Crea tu QR Card</h2>
+        <p>Completa el formulario y obtén tu tarjeta lista para imprimir.</p>
+      </div>
+
+      <!-- ACCESO POR CÓDIGO -->
+      <div class="access-box">
+        <div class="access-box-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          ¿Ya tienes una tarjeta? Ingresa tus datos
+        </div>
+        <form method="POST" class="access-form">
+          {% if error %}<div class="access-error">{{ error }}</div>{% endif %}
+          <div class="access-input-row">
+            <input type="text" name="access_name" placeholder="Nombre del negocio" required>
+            <input type="text" name="access_code" placeholder="Código de acceso" maxlength="20" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()" required>
+            <button type="submit">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              Acceder
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="form-wrapper">
+        <form method="POST" enctype="multipart/form-data">
+
+          <!-- LOGO UPLOAD -->
+          <div class="form-block">
+            <div class="form-block-title">
+              <div class="form-block-icon">🖼️</div>
+              Logo del negocio
+            </div>
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('logoInput').click()">
+              <div class="upload-preview" id="uploadPreview">
+                <div class="upload-placeholder">
+                  <div class="upload-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  </div>
+                  <p>Arrastra tu logo aquí o <span>haz clic para subir</span></p>
+                  <small>PNG, JPG, WEBP · Máx. 5MB</small>
+                </div>
+              </div>
+            </div>
+            <input type="file" name="logo" id="logoInput" accept="image/*" style="display:none" onchange="previewImage(event)">
+          </div>
+
+          <!-- INFO PRINCIPAL -->
+          <div class="form-block">
+            <div class="form-block-title">
+              <div class="form-block-icon">🏢</div>
+              Información principal
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Nombre del negocio <span class="req">*</span></label>
+                <input type="text" name="name" required placeholder="Ej: Panadería El Sol">
+              </div>
+              <div class="form-group">
+                <label>Categoría <span class="req">*</span></label>
+                <input type="text" name="category" required placeholder="Ej: Restaurante, Tienda...">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Descripción</label>
+              <textarea name="description" placeholder="Cuéntanos brevemente sobre tu negocio..."></textarea>
+            </div>
+          </div>
+
+          <!-- CONTACTO -->
+          <div class="form-block">
+            <div class="form-block-title">
+              <div class="form-block-icon">📞</div>
+              Datos de contacto
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Teléfono <span class="req">*</span></label>
+                <div class="input-icon-wrap">
+                  <span class="input-icon">📞</span>
+                  <input type="tel" name="phone" required placeholder="+1 809 000 0000">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Email <span class="req">*</span></label>
+                <div class="input-icon-wrap">
+                  <span class="input-icon">✉️</span>
+                  <input type="email" name="email" required placeholder="negocio@email.com">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Dirección <span class="req">*</span></label>
+              <div class="input-icon-wrap">
+                <span class="input-icon">📍</span>
+                <input type="text" name="address" required placeholder="Calle, Ciudad, País">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Sitio web</label>
+              <div class="input-icon-wrap">
+                <span class="input-icon">🌐</span>
+                <input type="url" name="website" placeholder="https://tunegocio.com">
+              </div>
+            </div>
+          </div>
+
+          <!-- REDES -->
+          <div class="form-block">
+            <div class="form-block-title">
+              <div class="form-block-icon">📲</div>
+              Redes sociales
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Instagram</label>
+                <div class="input-icon-wrap">
+                  <span class="input-icon">📸</span>
+                  <input type="text" name="instagram" placeholder="@tunegocio">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Facebook</label>
+                <div class="input-icon-wrap">
+                  <span class="input-icon">👍</span>
+                  <input type="text" name="facebook" placeholder="tunegocio">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CODIGO DE ACCESO -->
+          <div class="form-block">
+            <div class="form-block-title">
+              <div class="form-block-icon">🔑</div>
+              Código de acceso
+            </div>
+            <div class="form-group">
+              <label>Elige un código para volver a tu tarjeta <span class="req">*</span></label>
+              <div class="input-icon-wrap">
+                <span class="input-icon">🔑</span>
+                <input type="text" name="access_code_new" required placeholder="Ej: PIZZA2024" maxlength="20" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+              </div>
+              <small style="color:#94a3b8;font-size:0.75rem;margin-top:0.4rem;display:block">Guárdalo bien — lo necesitarás para editar o ver tu tarjeta.</small>
+            </div>
+          </div>
+
+          <!-- SUBMIT -->
+          <div class="form-submit">
+            <button type="submit" class="btn btn-primary btn-lg btn-full">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+              Generar mi QR Card
+            </button>
+            <p class="submit-note">🔒 Gratis · Sin registro · Sin tarjeta de crédito</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="/" class="navbar-brand">
+        <div class="brand-logo">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+        </div>
+        QRCard
+      </a>
+      <p>© 2025 QRCard · Tarjetas digitales para negocios</p>
+    </div>
+  </footer>
+
+  <script>
+    function previewImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById("uploadPreview").innerHTML = `
+          <img src="${e.target.result}" alt="Logo preview">
+          <button type="button" class="remove-img" onclick="removeImage(event)">✕</button>
+        `;
+        document.getElementById("uploadArea").classList.add("has-image");
+      };
+      reader.readAsDataURL(file);
+    }
+    function removeImage(e) {
+      e.stopPropagation();
+      document.getElementById("logoInput").value = "";
+      document.getElementById("uploadPreview").innerHTML = `
+        <div class="upload-placeholder">
+          <div class="upload-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <p>Arrastra tu logo aquí o <span>haz clic para subir</span></p>
+          <small>PNG, JPG, WEBP · Máx. 5MB</small>
+        </div>
+      `;
+      document.getElementById("uploadArea").classList.remove("has-image");
+    }
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>

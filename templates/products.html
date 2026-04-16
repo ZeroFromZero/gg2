@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos — {{ biz.name }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0f1117; color: #e2e8f0; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    .nav { background: rgba(15,17,23,0.95); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+    .nav-brand { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1rem; color: white; }
+    .nav-brand-icon { width: 28px; height: 28px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+    .nav-back { font-size: 0.82rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+
+    .page { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .page-title { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.03em; }
+    .page-title span { color: #fbbf24; }
+    .page-sub { font-size: 0.82rem; color: rgba(255,255,255,0.3); margin-top: 0.25rem; }
+
+    /* ADD FORM */
+    .add-form {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 1.5rem; margin-bottom: 2.5rem;
+    }
+    .add-form-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 1.25rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; }
+    .form-group input, .form-group textarea {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 0.7rem 1rem; color: white;
+      font-size: 0.88rem; font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #6366f1; background: rgba(99,102,241,0.08); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    /* FILE UPLOAD */
+    .upload-label {
+      display: flex; align-items: center; gap: 0.75rem;
+      background: rgba(255,255,255,0.04); border: 1.5px dashed rgba(255,255,255,0.12);
+      border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.2s;
+      font-size: 0.82rem; color: rgba(255,255,255,0.35);
+    }
+    .upload-label:hover { border-color: #6366f1; color: #a5b4fc; background: rgba(99,102,241,0.06); }
+    .upload-label svg { flex-shrink: 0; }
+    #imgPreview { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; display: none; }
+
+    .btn-add {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      color: #0f172a; border: none; border-radius: 10px;
+      padding: 0.75rem 1.5rem; font-size: 0.88rem; font-weight: 800;
+      font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s;
+      margin-top: 1rem;
+    }
+    .btn-add:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(245,158,11,0.35); }
+
+    /* PRODUCTS GRID */
+    .products-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 1rem; }
+    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+
+    .prod-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; overflow: hidden; transition: border-color 0.2s;
+    }
+    .prod-card:hover { border-color: rgba(255,255,255,0.15); }
+    .prod-img { width: 100%; aspect-ratio: 1; overflow: hidden; background: rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: center; }
+    .prod-img img { width: 100%; height: 100%; object-fit: cover; }
+    .prod-img-empty { color: rgba(255,255,255,0.1); }
+    .prod-body { padding: 1rem; }
+    .prod-name { font-size: 0.9rem; font-weight: 700; color: white; margin-bottom: 0.35rem; }
+    .prod-desc { font-size: 0.78rem; color: rgba(255,255,255,0.4); line-height: 1.5; margin-bottom: 0.5rem; }
+    .prod-price { font-size: 0.95rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.75rem; }
+    .prod-footer { display: flex; justify-content: flex-end; padding: 0 1rem 1rem; }
+    .btn-del {
+      display: flex; align-items: center; gap: 0.35rem;
+      background: rgba(239,68,68,0.08); color: #f87171;
+      border: 1px solid rgba(239,68,68,0.15); border-radius: 8px;
+      padding: 0.4rem 0.75rem; font-size: 0.75rem; font-weight: 600;
+      font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-del:hover { background: rgba(239,68,68,0.18); }
+
+    .empty-prods { text-align: center; padding: 3rem 1rem; color: rgba(255,255,255,0.2); font-size: 0.88rem; }
+    .empty-prods svg { margin: 0 auto 1rem; opacity: 0.15; }
+
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .prod-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/" class="nav-brand">
+      <div class="nav-brand-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+      </div>
+      QRCard
+    </a>
+    <a href="{{ url_for('card', biz_id=biz_id) }}" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver a mi tarjeta
+    </a>
+  </nav>
+
+  <div class="page">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Productos <span>/ {{ biz.name }}</span></h1>
+        <p class="page-sub">{{ biz.products|length if biz.products else 0 }} producto{{ 's' if (biz.products|length if biz.products else 0) != 1 else '' }} publicado{{ 's' if (biz.products|length if biz.products else 0) != 1 else '' }}</p>
+      </div>
+    </div>
+
+    <!-- ADD PRODUCT FORM -->
+    <div class="add-form">
+      <div class="add-form-title">+ Agregar producto</div>
+      <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="add">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre del producto *</label>
+            <input type="text" name="name" placeholder="Ej: Café Americano" required>
+          </div>
+          <div class="form-group">
+            <label>Precio</label>
+            <input type="text" name="price" placeholder="Ej: $2.50 / Gs. 15.000">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:1rem">
+          <label>Descripción</label>
+          <textarea name="description" placeholder="Describe brevemente el producto..."></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>Foto del producto</label>
+          <label class="upload-label" for="productImg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span id="uploadText">Haz clic para subir una foto</span>
+            <img id="imgPreview" src="" alt="preview">
+          </label>
+          <input type="file" id="productImg" name="product_img" accept="image/*" style="display:none" onchange="previewProd(event)">
+        </div>
+        <button type="submit" class="btn-add">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Agregar producto
+        </button>
+      </form>
+    </div>
+
+    <!-- PRODUCTS LIST -->
+    {% if biz.products %}
+    <div class="products-title">Tus productos ({{ biz.products|length }})</div>
+    <div class="prod-grid">
+      {% for product in biz.products %}
+      <div class="prod-card">
+        <div class="prod-img">
+          {% if product.image %}
+            <img src="{{ url_for('static', filename='uploads/' ~ product.image) }}" alt="{{ product.name }}">
+          {% else %}
+            <div class="prod-img-empty">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            </div>
+          {% endif %}
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">{{ product.name }}</div>
+          {% if product.description %}<div class="prod-desc">{{ product.description }}</div>{% endif %}
+          {% if product.price %}<div class="prod-price">{{ product.price }}</div>{% endif %}
+        </div>
+        <div class="prod-footer">
+          <form method="POST">
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <button type="submit" class="btn-del" onclick="return confirm('¿Eliminar {{ product.name }}?')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+              Eliminar
+            </button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-prods">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <p>Aún no tienes productos. ¡Agrega el primero!</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    function previewProd(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const img = document.getElementById('imgPreview');
+        img.src = ev.target.result;
+        img.style.display = 'block';
+        document.getElementById('uploadText').textContent = file.name;
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>

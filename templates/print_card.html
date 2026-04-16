@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @page { size: letter portrait; margin: 15mm 20mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: white; }
+
+    .header {
+      font-size: 7pt; color: #94a3b8; text-align: center;
+      margin-bottom: 8mm; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+
+    .grid { display: flex; flex-direction: column; gap: 8mm; align-items: center; }
+
+    .card {
+      width: 105mm; height: 68mm;
+      border-radius: 0; overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%);
+      display: flex; flex-direction: row;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .card-left {
+      flex: 1; padding: 5mm 3mm 5mm 6mm;
+      display: flex; flex-direction: column; justify-content: center;
+      overflow: hidden;
+    }
+
+    .logo {
+      width: 12mm; height: 12mm; border-radius: 0;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6mm; font-weight: 900; color: white;
+      margin-bottom: 3mm; overflow: hidden; flex-shrink: 0;
+    }
+    .logo img { width: 100%; height: 100%; object-fit: cover; }
+
+    .biz-name { font-size: 11pt; font-weight: 900; color: white; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1.5mm; white-space: nowrap; overflow: hidden; }
+    .biz-cat { display: inline-block; font-size: 6pt; font-weight: 700; background: rgba(99,102,241,0.25); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.35); padding: 0.6mm 2.5mm; border-radius: 0; margin-bottom: 3.5mm; }
+
+    .contacts { display: flex; flex-direction: column; gap: 1.5mm; }
+    .row { display: flex; align-items: center; gap: 2mm; font-size: 7pt; color: rgba(255,255,255,0.65); white-space: nowrap; overflow: hidden; }
+    .row svg { width: 3mm; height: 3mm; flex-shrink: 0; opacity: 0.6; }
+
+    .sep { width: 0.3mm; background: rgba(255,255,255,0.07); margin: 5mm 0; flex-shrink: 0; }
+
+    .card-right {
+      width: 38mm; flex-shrink: 0;
+      padding: 5mm 5mm 5mm 3mm;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 2mm;
+    }
+
+    .qr-wrap { background: white; padding: 2mm; border-radius: 0; }
+    .qr-wrap img { width: 26mm; height: 26mm; display: block; }
+
+    .scan-text { font-size: 5.5pt; font-weight: 700; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-align: center; }
+    .brand { font-size: 5pt; color: rgba(255,255,255,0.25); letter-spacing: 0.06em; }
+  </style>
+</head>
+<body>
+  <div class="header">{{ biz.name }} · QRCard · Recortar por las líneas</div>
+  <div class="grid">
+    {% for i in range(3) %}
+    <div class="card">
+      <div class="card-left">
+        <div class="logo">
+          {% if biz.logo %}
+            <img src="{{ url_for('static', filename='uploads/' ~ biz.logo, _external=True) }}" alt="">
+          {% else %}
+            {{ biz.name[0] | upper }}
+          {% endif %}
+        </div>
+        <div class="biz-name">{{ biz.name }}</div>
+        <div class="biz-cat">{{ biz.category }}</div>
+        <div class="contacts">
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            {{ biz.phone }}
+          </div>
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            {{ biz.email }}
+          </div>
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {{ biz.address }}
+          </div>
+          {% if biz.website %}
+          <div class="row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            {{ biz.website | replace('https://','') | replace('http://','') }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="sep"></div>
+      <div class="card-right">
+        <div class="qr-wrap">
+          <img src="data:image/png;base64,{{ qr_img }}" alt="QR">
+        </div>
+        <div class="scan-text">Página Web</div>
+        <div class="scan-text">Escanea el QR</div>
+        <div class="brand">QRCard</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>

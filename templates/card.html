@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tu QR Card — {{ biz.name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='card.css') }}">
+</head>
+<body class="card-result-page">
+
+  <!-- NAVBAR -->
+  <nav class="navbar no-print">
+    <a href="/" class="navbar-brand">
+      <div class="brand-logo">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+      </div>
+      QRCard
+    </a>
+    <div class="navbar-links">
+      <a href="{{ url_for('profile', biz_id=biz_id) }}" class="nav-link" target="_blank">Ver perfil →</a>
+      <a href="/" class="btn-sm-primary">+ Nueva tarjeta</a>
+    </div>
+  </nav>
+
+  <!-- SUCCESS BANNER -->
+  <div class="success-banner no-print">
+    <div class="success-banner-inner">
+      <div class="success-check">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>
+        <strong>¡Tarjeta creada con éxito!</strong>
+        <span>Elige un estilo, personaliza y descarga tu QR Card.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cr-layout no-print">
+
+    <!-- LEFT: CONTROLS -->
+    <aside class="cr-sidebar">
+      <div class="cr-sidebar-section">
+        <div class="cr-sidebar-title">Estilo de tarjeta</div>
+        <div class="theme-grid">
+          <button class="theme-btn active" data-theme="dark" title="Oscuro">
+            <div class="theme-preview dark-prev"></div>
+            <span>Oscuro</span>
+          </button>
+          <button class="theme-btn" data-theme="light" title="Claro">
+            <div class="theme-preview light-prev"></div>
+            <span>Claro</span>
+          </button>
+          <button class="theme-btn" data-theme="violet" title="Violeta">
+            <div class="theme-preview violet-prev"></div>
+            <span>Violeta</span>
+          </button>
+          <button class="theme-btn" data-theme="ocean" title="Océano">
+            <div class="theme-preview ocean-prev"></div>
+            <span>Océano</span>
+          </button>
+          <button class="theme-btn" data-theme="forest" title="Bosque">
+            <div class="theme-preview forest-prev"></div>
+            <span>Bosque</span>
+          </button>
+          <button class="theme-btn" data-theme="rose" title="Rosa">
+            <div class="theme-preview rose-prev"></div>
+            <span>Rosa</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="cr-sidebar-section">
+        <div class="cr-sidebar-title">Acciones</div>
+        <div class="cr-actions">
+          <button onclick="window.print()" class="cr-action-btn primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Imprimir tarjeta
+          </button>
+          <a href="{{ url_for('download_pdf', biz_id=biz_id) }}" class="cr-action-btn pdf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+            Descargar PDF
+          </a>          <a href="{{ url_for('edit', biz_id=biz_id) }}" class="cr-action-btn edit">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Editar información
+          </a>
+          <a href="{{ url_for('profile', biz_id=biz_id) }}" class="cr-action-btn success" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ver perfil público
+          </a>
+          <a href="{{ url_for('products', biz_id=biz_id) }}" class="cr-action-btn products">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            Mis productos
+          </a>
+          <a href="/" class="cr-action-btn outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Crear otra tarjeta
+          </a>
+        </div>
+      </div>
+
+      <div class="cr-sidebar-section">
+        <div class="cr-sidebar-title">Tu código de acceso</div>
+        <div class="cr-access-code">
+          <span>{{ biz.access_code or '—' }}</span>
+          <small>Úsalo junto al nombre del negocio para volver a esta tarjeta.</small>
+        </div>
+      </div>
+
+      <div class="cr-sidebar-section">
+        <div class="cr-sidebar-title">Estadísticas</div>
+        <div class="cr-stats">
+          <div class="cr-stat">
+            <div class="cr-stat-val">{{ biz.stats.qr_scans if biz.stats else 0 }}</div>
+            <div class="cr-stat-label">Escaneos QR</div>
+          </div>
+          <div class="cr-stat">
+            <div class="cr-stat-val">{{ biz.stats.profile_views if biz.stats else 0 }}</div>
+            <div class="cr-stat-label">Visitas perfil</div>
+          </div>
+        </div>
+        {% if biz.stats and biz.stats.last_seen %}
+        <div class="cr-stat-last">Última visita: {{ biz.stats.last_seen }}</div>
+        {% endif %}
+      </div>
+
+      <div class="cr-sidebar-section">
+        <div class="cr-sidebar-title">Compartir enlace</div>
+        <div class="cr-share-box">
+          <input type="text" value="{{ profile_url }}" id="profileUrl" readonly>
+          <button onclick="copyLink()" id="copyBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copiar
+          </button>
+        </div>
+        <div class="cr-share-links">
+          <a href="https://wa.me/?text={{ profile_url | urlencode }}" target="_blank" class="share-pill whatsapp">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="mailto:?subject={{ biz.name }}&body={{ profile_url }}" class="share-pill email">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT: CARD PREVIEW -->
+    <main class="cr-preview">
+      <div class="cr-preview-label">Vista previa en tiempo real</div>
+      <div class="cr-card-stage" id="cardStage">
+        <!-- CARD RENDERED BY JS THEMES -->
+        <div class="bc bc-dark" id="businessCard">
+          <div class="bc-inner">
+            <div class="bc-left">
+              <div class="bc-logo" id="bcLogo">
+                {% if biz.logo %}
+                  <img src="{{ url_for('static', filename='uploads/' ~ biz.logo) }}" alt="{{ biz.name }}">
+                {% else %}
+                  <span>{{ biz.name[0] | upper }}</span>
+                {% endif %}
+              </div>
+              <div class="bc-name" id="bcName">{{ biz.name }}</div>
+              <div class="bc-cat" id="bcCat">{{ biz.category }}</div>
+              <div class="bc-contacts">
+                <div class="bc-row">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                  <span>{{ biz.phone }}</span>
+                </div>
+                <div class="bc-row">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  <span>{{ biz.email }}</span>
+                </div>
+                <div class="bc-row">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>{{ biz.address }}</span>
+                </div>
+                {% if biz.website %}
+                <div class="bc-row">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                  <span>{{ biz.website | replace('https://','') | replace('http://','') }}</span>
+                </div>
+                {% endif %}
+                {% if biz.instagram %}
+                <div class="bc-row">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                  <span>{{ biz.instagram }}</span>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="bc-sep"></div>
+            <div class="bc-right">
+              <div class="bc-qr-wrap">
+                <img src="data:image/png;base64,{{ qr_img }}" alt="QR Perfil">
+              </div>
+              <div class="bc-scan">Página Web</div>
+              <div class="bc-scan">Escanea el QR</div>
+              <div class="bc-brand">QRCard</div>
+            </div>
+          </div>
+          <div class="bc-glow1"></div>
+          <div class="bc-glow2"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- PRINT-ONLY VERSION — 4 tarjetas por hoja, 1 por fila -->
+  <div class="print-only" id="printSheet">
+    <div class="print-header">{{ biz.name }} — Recortar por las líneas punteadas</div>
+    <div class="print-grid" id="printGrid">
+
+      {% for i in range(6) %}
+      <div class="pc-cell">
+        <div class="pc bc bc-dark">
+          <div class="bc-inner">
+            <div class="bc-left">
+              <div class="bc-logo">
+                {% if biz.logo %}<img src="{{ url_for('static', filename='uploads/' ~ biz.logo) }}" alt="{{ biz.name }}">{% else %}<span>{{ biz.name[0] | upper }}</span>{% endif %}
+              </div>
+              <div class="bc-name">{{ biz.name }}</div>
+              <div class="bc-cat">{{ biz.category }}</div>
+              <div class="bc-contacts">
+                <div class="bc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg><span>{{ biz.phone }}</span></div>
+                <div class="bc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>{{ biz.email }}</span></div>
+                <div class="bc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>{{ biz.address }}</span></div>
+                {% if biz.website %}<div class="bc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg><span>{{ biz.website | replace('https://','') | replace('http://','') }}</span></div>{% endif %}
+                {% if biz.instagram %}<div class="bc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><span>{{ biz.instagram }}</span></div>{% endif %}
+              </div>
+            </div>
+            <div class="bc-sep"></div>
+            <div class="bc-right">
+              <div class="bc-qr-wrap">
+                <img src="data:image/png;base64,{{ qr_img }}" alt="QR Code">
+              </div>
+              <div class="bc-scan">Página Web</div>
+              <div class="bc-scan">Escanea el QR</div>
+              <div class="bc-brand">QRCard</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+
+  <script>
+    const themes = {
+      dark:   'bc-dark',
+      light:  'bc-light',
+      violet: 'bc-violet',
+      ocean:  'bc-ocean',
+      forest: 'bc-forest',
+      rose:   'bc-rose',
+    };
+
+    function applyTheme(cls) {
+      document.getElementById('businessCard').className = 'bc ' + cls;
+      document.querySelectorAll('#printGrid .pc').forEach(c => c.className = 'pc bc ' + cls);
+    }
+
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cls = themes[btn.dataset.theme];
+        applyTheme(cls);
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    function downloadPDF() {
+      // Abre el diálogo de impresión — en el destino elegir "Guardar como PDF"
+      const tip = document.createElement('div');
+      tip.style.cssText = 'position:fixed;top:1rem;left:50%;transform:translateX(-50%);background:#1e293b;color:white;padding:0.75rem 1.5rem;border-radius:12px;font-size:0.85rem;font-family:Inter,sans-serif;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1)';
+      tip.textContent = '💡 En el diálogo, selecciona "Guardar como PDF" como destino';
+      document.body.appendChild(tip);
+      setTimeout(() => { window.print(); tip.remove(); }, 800);
+    }
+
+    function copyLink() {
+      const input = document.getElementById("profileUrl");
+      const btn = document.getElementById("copyBtn");
+      input.select();
+      document.execCommand("copy");
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> ¡Copiado!`;
+      btn.style.background = '#10b981';
+      setTimeout(() => {
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar`;
+        btn.style.background = '';
+      }, 2500);
+    }
+  </script>
+</body>
+</html>

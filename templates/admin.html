@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — QRCard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0f1117; color: #e2e8f0; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    .nav { background: rgba(15,17,23,0.95); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+    .nav-brand { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1rem; color: white; }
+    .nav-brand-icon { width: 28px; height: 28px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+    .nav-back { font-size: 0.82rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+
+    /* HEADER */
+    .page-header { padding: 2.5rem 2rem 1.5rem; max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .page-title { font-size: 1.6rem; font-weight: 900; letter-spacing: -0.03em; }
+    .page-title span { color: #818cf8; }
+    .page-count { font-size: 0.8rem; color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); padding: 0.3rem 0.8rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); }
+
+    /* GRID */
+    .grid { max-width: 1100px; margin: 0 auto; padding: 0 2rem 4rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+
+    /* CARD */
+    .biz-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; overflow: hidden; transition: border-color 0.2s; }
+    .biz-card:hover { border-color: rgba(99,102,241,0.3); }
+    .biz-card-top { padding: 1.25rem; display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .biz-avatar { width: 48px; height: 48px; border-radius: 13px; background: linear-gradient(135deg, #6366f1, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 900; color: white; overflow: hidden; flex-shrink: 0; }
+    .biz-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .biz-info { flex: 1; min-width: 0; }
+    .biz-name { font-size: 0.95rem; font-weight: 700; color: white; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 0.2rem; }
+    .biz-cat { display: inline-block; font-size: 0.65rem; font-weight: 600; background: rgba(99,102,241,0.15); color: #a5b4fc; padding: 0.2rem 0.6rem; border-radius: 10px; border: 1px solid rgba(99,102,241,0.25); }
+    .biz-card-body { padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.45rem; }
+    .biz-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.78rem; color: rgba(255,255,255,0.45); overflow: hidden; }
+    .biz-row svg { flex-shrink: 0; opacity: 0.5; }
+    .biz-row span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .biz-card-footer { padding: 0.9rem 1.25rem; display: flex; gap: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); }
+    .btn-view { flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.55rem; border-radius: 9px; font-size: 0.78rem; font-weight: 600; font-family: 'Inter', sans-serif; background: rgba(99,102,241,0.12); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.2); transition: all 0.2s; cursor: pointer; }
+    .btn-view:hover { background: rgba(99,102,241,0.22); }
+    .btn-card { flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.55rem; border-radius: 9px; font-size: 0.78rem; font-weight: 600; font-family: 'Inter', sans-serif; background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s; cursor: pointer; }
+    .btn-card:hover { background: rgba(255,255,255,0.09); color: white; }
+    .btn-del { display: flex; align-items: center; justify-content: center; padding: 0.55rem 0.7rem; border-radius: 9px; font-size: 0.78rem; font-weight: 600; font-family: 'Inter', sans-serif; background: rgba(239,68,68,0.08); color: #f87171; border: 1px solid rgba(239,68,68,0.15); transition: all 0.2s; cursor: pointer; }
+    .btn-del:hover { background: rgba(239,68,68,0.18); }
+
+    /* STATS */
+    .biz-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; padding: 0.75rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02); }
+    .biz-stat { display: flex; flex-direction: column; align-items: center; gap: 0.1rem; }
+    .biz-stat-val { font-size: 1.4rem; font-weight: 900; color: #a5b4fc; line-height: 1; }
+    .biz-stat-lbl { font-size: 0.62rem; font-weight: 600; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 0.07em; }
+
+    /* EMPTY */
+    .empty { max-width: 1100px; margin: 4rem auto; padding: 0 2rem; text-align: center; }
+    .empty-icon { width: 64px; height: 64px; background: rgba(255,255,255,0.04); border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; border: 1px solid rgba(255,255,255,0.07); }
+    .empty h3 { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.5rem; }
+    .empty p { font-size: 0.85rem; color: rgba(255,255,255,0.35); margin-bottom: 1.5rem; }
+    .btn-create { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 0.75rem 1.5rem; border-radius: 11px; font-size: 0.88rem; font-weight: 700; transition: all 0.2s; }
+    .btn-create:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99,102,241,0.4); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/" class="nav-brand">
+      <div class="nav-brand-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+      </div>
+      QRCard
+    </a>
+    <a href="/" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver al inicio
+    </a>
+  </nav>
+
+  <div class="page-header">
+    <h1 class="page-title">Panel <span>Admin</span></h1>
+    <span class="page-count">{{ businesses|length }} tarjeta{{ 's' if businesses|length != 1 else '' }}</span>
+  </div>
+
+  {% if businesses %}
+  <div class="grid">
+    {% for biz_id, biz in businesses.items() %}
+    <div class="biz-card">
+      <div class="biz-card-top">
+        <div class="biz-avatar">
+          {% if biz.logo %}
+            <img src="{{ url_for('static', filename='uploads/' ~ biz.logo) }}" alt="{{ biz.name }}">
+          {% else %}
+            {{ biz.name[0] | upper }}
+          {% endif %}
+        </div>
+        <div class="biz-info">
+          <div class="biz-name">{{ biz.name }}</div>
+          <span class="biz-cat">{{ biz.category }}</span>
+        </div>
+      </div>
+      <div class="biz-card-body">
+        <div class="biz-row">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.4 1.14 2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <span>{{ biz.phone }}</span>
+        </div>
+        <div class="biz-row">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span>{{ biz.email }}</span>
+        </div>
+        <div class="biz-row">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>{{ biz.address }}</span>
+        </div>
+        {% if biz.wifi_ssid %}
+        <div class="biz-row">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
+          <span>{{ biz.wifi_ssid }}{% if biz.wifi_password %} · {{ biz.wifi_password }}{% endif %}</span>
+        </div>
+        {% endif %}
+        <div class="biz-row" style="margin-top:0.2rem; font-size:0.7rem; opacity:0.3;">
+          ID: {{ biz_id }} · Creado: {{ biz.created_at or '—' }}
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="biz-stats">
+        <div class="biz-stat">
+          <span class="biz-stat-val">{{ biz.stats.qr_scans if biz.stats else 0 }}</span>
+          <span class="biz-stat-lbl">Escaneos QR</span>
+        </div>
+        <div class="biz-stat">
+          <span class="biz-stat-val">{{ biz.stats.profile_views if biz.stats else 0 }}</span>
+          <span class="biz-stat-lbl">Visitas perfil</span>
+        </div>
+        <div class="biz-stat" style="grid-column:1/-1">
+          <span class="biz-stat-lbl">Última visita: {{ biz.stats.last_seen if biz.stats and biz.stats.last_seen else 'Nunca' }}</span>
+        </div>
+      </div>
+
+      <div class="biz-card-footer">
+        <a href="{{ url_for('profile', biz_id=biz_id) }}" target="_blank" class="btn-view">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Ver perfil
+        </a>
+        <a href="{{ url_for('card', biz_id=biz_id) }}" class="btn-card">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+          Tarjeta
+        </a>
+        <form method="POST" action="{{ url_for('delete_business', biz_id=biz_id) }}" onsubmit="return confirm('¿Eliminar {{ biz.name }}?')">
+          <button type="submit" class="btn-del">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="empty">
+    <div class="empty-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+    </div>
+    <h3>Sin tarjetas aún</h3>
+    <p>Crea tu primera QR Card y aparecerá aquí.</p>
+    <a href="/" class="btn-create">Crear primera tarjeta →</a>
+  </div>
+  {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar — {{ biz.name }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0f1117; color: #e2e8f0; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    .nav { background: rgba(15,17,23,0.95); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+    .nav-brand { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1rem; color: white; }
+    .nav-brand-icon { width: 28px; height: 28px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+    .nav-back { font-size: 0.82rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+
+    .page { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+    .page-title { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+    .page-title span { color: #a5b4fc; }
+    .page-sub { font-size: 0.82rem; color: rgba(255,255,255,0.3); margin-bottom: 2.5rem; }
+
+    .form-block {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 1.5rem; margin-bottom: 1.25rem;
+    }
+    .form-block-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+    .form-group:last-child { margin-bottom: 0; }
+    label { font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; }
+    input, textarea {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 0.75rem 1rem; color: white;
+      font-size: 0.9rem; font-family: 'Inter', sans-serif; transition: border-color 0.2s; width: 100%;
+    }
+    input:focus, textarea:focus { outline: none; border-color: #6366f1; background: rgba(99,102,241,0.08); }
+    input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.2); }
+    textarea { resize: vertical; min-height: 90px; }
+
+    /* Logo upload */
+    .logo-row { display: flex; align-items: center; gap: 1.25rem; }
+    .logo-preview { width: 64px; height: 64px; border-radius: 14px; overflow: hidden; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 900; color: white; flex-shrink: 0; }
+    .logo-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .upload-label { display: flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.04); border: 1.5px dashed rgba(255,255,255,0.12); border-radius: 10px; padding: 0.85rem 1.25rem; cursor: pointer; font-size: 0.82rem; color: rgba(255,255,255,0.35); transition: all 0.2s; flex: 1; }
+    .upload-label:hover { border-color: #6366f1; color: #a5b4fc; }
+
+    .btn-save {
+      width: 100%; padding: 0.9rem;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white; border: none; border-radius: 12px;
+      font-size: 0.95rem; font-weight: 700; font-family: 'Inter', sans-serif;
+      cursor: pointer; transition: all 0.2s; margin-top: 0.5rem;
+      box-shadow: 0 4px 16px rgba(99,102,241,0.35);
+    }
+    .btn-save:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(99,102,241,0.45); }
+
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/" class="nav-brand">
+      <div class="nav-brand-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+      </div>
+      QRCard
+    </a>
+    <a href="{{ url_for('card', biz_id=biz_id) }}" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver a mi tarjeta
+    </a>
+  </nav>
+
+  <div class="page">
+    <h1 class="page-title">Editar <span>{{ biz.name }}</span></h1>
+    <p class="page-sub">Los cambios se reflejan inmediatamente en tu perfil público.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+      <!-- LOGO -->
+      <div class="form-block">
+        <div class="form-block-title">🖼️ Logo del negocio</div>
+        <div class="logo-row">
+          <div class="logo-preview" id="logoPreview">
+            {% if biz.logo %}
+              <img src="{{ url_for('static', filename='uploads/' ~ biz.logo) }}" alt="logo" id="logoImg">
+            {% else %}
+              <span id="logoLetter">{{ biz.name[0] | upper }}</span>
+            {% endif %}
+          </div>
+          <label class="upload-label" for="logoInput">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span id="uploadText">Cambiar logo</span>
+          </label>
+          <input type="file" id="logoInput" name="logo" accept="image/*" style="display:none" onchange="previewLogo(event)">
+        </div>
+      </div>
+
+      <!-- INFO PRINCIPAL -->
+      <div class="form-block">
+        <div class="form-block-title">🏢 Información principal</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre del negocio</label>
+            <input type="text" name="name" value="{{ biz.name }}" required>
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <input type="text" name="category" value="{{ biz.category }}" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea name="description">{{ biz.description or '' }}</textarea>
+        </div>
+      </div>
+
+      <!-- CONTACTO -->
+      <div class="form-block">
+        <div class="form-block-title">📞 Datos de contacto</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" name="phone" value="{{ biz.phone }}" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" value="{{ biz.email }}" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Dirección</label>
+          <input type="text" name="address" value="{{ biz.address }}" required>
+        </div>
+        <div class="form-group">
+          <label>Sitio web</label>
+          <input type="url" name="website" value="{{ biz.website or '' }}" placeholder="https://tunegocio.com">
+        </div>
+      </div>
+
+      <!-- REDES -->
+      <div class="form-block">
+        <div class="form-block-title">📲 Redes sociales</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Instagram</label>
+            <input type="text" name="instagram" value="{{ biz.instagram or '' }}" placeholder="@tunegocio">
+          </div>
+          <div class="form-group">
+            <label>Facebook</label>
+            <input type="text" name="facebook" value="{{ biz.facebook or '' }}" placeholder="tunegocio">
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-save">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle;margin-right:0.4rem"><polyline points="20 6 9 17 4 12"/></svg>
+        Guardar cambios
+      </button>
+    </form>
+  </div>
+
+  <script>
+    function previewLogo(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const preview = document.getElementById('logoPreview');
+        preview.innerHTML = `<img src="${ev.target.result}" alt="logo" style="width:100%;height:100%;object-fit:cover;">`;
+        document.getElementById('uploadText').textContent = file.name;
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos — {{ biz.name }}</title>
+  <meta name="description" content="Catálogo de productos de {{ biz.name }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f1f5f9; color: #1e293b; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #060609 0%, #0f0e1e 100%);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .header-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99,102,241,0.2) 0%, transparent 70%);
+    }
+    .header-nav {
+      position: relative; z-index: 2;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .header-brand { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; font-weight: 700; color: rgba(255,255,255,0.25); letter-spacing: 0.05em; text-transform: uppercase; }
+    .header-brand svg { opacity: 0.4; }
+    .back-btn {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.4);
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: white; }
+
+    .header-body {
+      position: relative; z-index: 2;
+      display: flex; align-items: center; gap: 1.25rem;
+      padding: 2rem 1.5rem 2.5rem;
+      max-width: 1000px; margin: 0 auto;
+    }
+    .biz-avatar {
+      width: 64px; height: 64px; border-radius: 18px;
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; font-weight: 900; color: white;
+      overflow: hidden; flex-shrink: 0;
+      border: 2px solid rgba(99,102,241,0.4);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .biz-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .biz-info { flex: 1; }
+    .biz-name { font-size: 1.5rem; font-weight: 900; color: white; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
+    .biz-cat { display: inline-block; background: rgba(99,102,241,0.18); color: #a5b4fc; font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.9rem; border-radius: 20px; border: 1px solid rgba(99,102,241,0.3); margin-bottom: 0.5rem; }
+    .biz-count { font-size: 0.8rem; color: rgba(255,255,255,0.35); }
+    .contact-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: white; padding: 0.7rem 1.4rem; border-radius: 12px;
+      font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(5,150,105,0.35);
+      transition: all 0.2s;
+    }
+    .contact-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(5,150,105,0.45); }
+
+    /* SEARCH & FILTER */
+    .toolbar {
+      max-width: 1000px; margin: 0 auto;
+      padding: 1.5rem 1.5rem 0;
+      display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;
+    }
+    .search-box {
+      flex: 1; min-width: 200px;
+      display: flex; align-items: center; gap: 0.6rem;
+      background: white; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 0.65rem 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .search-box svg { color: #94a3b8; flex-shrink: 0; }
+    .search-box input { flex: 1; border: none; outline: none; font-size: 0.88rem; font-family: 'Inter', sans-serif; color: #0f172a; background: transparent; }
+    .search-box input::placeholder { color: #94a3b8; }
+    .sort-select {
+      background: white; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 0.65rem 1rem; font-size: 0.85rem; font-family: 'Inter', sans-serif;
+      color: #475569; cursor: pointer; outline: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    /* GRID */
+    .catalog {
+      max-width: 1000px; margin: 0 auto;
+      padding: 1.25rem 1.5rem 4rem;
+    }
+    .catalog-empty { text-align: center; padding: 4rem 1rem; color: #94a3b8; }
+    .catalog-empty svg { margin: 0 auto 1rem; opacity: 0.3; }
+
+    .prod-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .prod-card {
+      background: white; border: 1px solid #e8edf5; border-radius: 18px;
+      overflow: hidden; display: block;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+      transition: all 0.2s;
+      position: relative;
+    }
+    .prod-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); border-color: #bbf7d0; }
+
+    .prod-img {
+      width: 100%; aspect-ratio: 1;
+      overflow: hidden; background: #f8fafc;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .prod-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .prod-card:hover .prod-img img { transform: scale(1.05); }
+    .prod-img-empty { color: #e2e8f0; }
+
+    .prod-body { padding: 1rem; }
+    .prod-name { font-size: 0.92rem; font-weight: 700; color: #0f172a; margin-bottom: 0.3rem; line-height: 1.3; }
+    .prod-desc { font-size: 0.78rem; color: #64748b; line-height: 1.5; margin-bottom: 0.6rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .prod-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+    .prod-price { font-size: 1rem; font-weight: 900; color: #6366f1; }
+    .prod-wa-btn {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: #f0fdf4; color: #16a34a;
+      border: 1px solid #bbf7d0; border-radius: 8px;
+      padding: 0.4rem 0.75rem; font-size: 0.75rem; font-weight: 700;
+      font-family: 'Inter', sans-serif; cursor: pointer;
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .prod-wa-btn:hover { background: #dcfce7; box-shadow: 0 4px 12px rgba(22,163,74,0.2); }
+
+    /* BADGE sin precio */
+    .prod-no-price .prod-price { display: none; }
+
+    @media (max-width: 600px) {
+      .header-body { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .contact-btn { width: 100%; justify-content: center; }
+      .prod-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+      .toolbar { padding: 1rem 1rem 0; }
+      .catalog { padding: 1rem 1rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-bg"></div>
+    <nav class="header-nav">
+      <a href="{{ url_for('index') }}" class="header-brand">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+        QRCard
+      </a>
+      <a href="{{ url_for('profile', biz_id=biz_id) }}" class="back-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Ver perfil
+      </a>
+    </nav>
+    <div class="header-body">
+      <div class="biz-avatar">
+        {% if biz.logo %}
+          <img src="{{ url_for('static', filename='uploads/' ~ biz.logo) }}" alt="{{ biz.name }}">
+        {% else %}
+          {{ biz.name[0] | upper }}
+        {% endif %}
+      </div>
+      <div class="biz-info">
+        <div class="biz-name">{{ biz.name }}</div>
+        <div class="biz-cat">{{ biz.category }}</div>
+        <div class="biz-count">{{ biz.products | length if biz.products else 0 }} producto{{ 's' if (biz.products | length if biz.products else 0) != 1 else '' }}</div>
+      </div>
+      <a href="https://wa.me/{{ biz.phone | replace('+','') | replace(' ','') | replace('-','') }}?text={{ ('Hola! Vi su catálogo de productos en QRCard y me gustaría más información.') | urlencode }}" target="_blank" class="contact-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Contactar
+      </a>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  {% if biz.products and biz.products | length > 0 %}
+  <div class="toolbar">
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Buscar producto..." oninput="filterProducts()">
+    </div>
+    <select class="sort-select" id="sortSelect" onchange="filterProducts()">
+      <option value="default">Orden original</option>
+      <option value="name">Nombre A-Z</option>
+      <option value="price">Precio</option>
+    </select>
+  </div>
+  {% endif %}
+
+  <!-- CATALOG -->
+  <div class="catalog">
+    {% if biz.products and biz.products | length > 0 %}
+    <div class="prod-grid" id="prodGrid">
+      {% for product in biz.products %}
+      <a href="https://wa.me/{{ biz.phone | replace('+','') | replace(' ','') | replace('-','') }}?text={{ ('Hola! Estoy interesado en: ' ~ product.name ~ ((' — ' ~ product.price) if product.price else '') ~ '. ¿Tienen disponibilidad?') | urlencode }}"
+         target="_blank"
+         class="prod-card{% if not product.price %} prod-no-price{% endif %}"
+         data-name="{{ product.name | lower }}"
+         data-price="{{ product.price or '' }}">
+        <div class="prod-img">
+          {% if product.image %}
+            <img src="{{ url_for('static', filename='uploads/' ~ product.image) }}" alt="{{ product.name }}" loading="lazy">
+          {% else %}
+            <div class="prod-img-empty">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            </div>
+          {% endif %}
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">{{ product.name }}</div>
+          {% if product.description %}<div class="prod-desc">{{ product.description }}</div>{% endif %}
+          <div class="prod-footer">
+            <span class="prod-price">{{ product.price }}</span>
+            <span class="prod-wa-btn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Consultar
+            </span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    <div id="emptySearch" style="display:none" class="catalog-empty">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <p>No se encontraron productos.</p>
+    </div>
+    {% else %}
+    <div class="catalog-empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <p>Este negocio aún no tiene productos publicados.</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    function filterProducts() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const sort = document.getElementById('sortSelect').value;
+      const grid = document.getElementById('prodGrid');
+      const cards = Array.from(grid.querySelectorAll('.prod-card'));
+
+      // Filtrar
+      let visible = cards.filter(c => {
+        const match = c.dataset.name.includes(q);
+        c.style.display = match ? '' : 'none';
+        return match;
+      });
+
+      document.getElementById('emptySearch').style.display = visible.length === 0 ? 'block' : 'none';
+
+      // Ordenar
+      if (sort === 'name') {
+        visible.sort((a, b) => a.dataset.name.localeCompare(b.dataset.name));
+      } else if (sort === 'price') {
+        visible.sort((a, b) => {
+          const pa = parseFloat(a.dataset.price.replace(/[^0-9.]/g, '')) || 0;
+          const pb = parseFloat(b.dataset.price.replace(/[^0-9.]/g, '')) || 0;
+          return pa - pb;
+        });
+      }
+
+      visible.forEach(c => grid.appendChild(c));
+    }
+  </script>
+</body>
+</html>
