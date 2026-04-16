@@ -123,9 +123,9 @@ def card(biz_id):
     biz = businesses.get(biz_id)
     if not biz:
         return "Negocio no encontrado", 404
-    profile_url = f"http://192.168.50.178:5000/p/{biz_id}"
+    profile_url = f"https://zuppon.es/p/{biz_id}"
     # El QR del perfil lleva a /scan/ para registrar el escaneo antes de redirigir
-    scan_url = f"http://192.168.50.178:5000/scan/{biz_id}"
+    scan_url = f"https://zuppon.es/scan/{biz_id}"
     qr_profile = generate_qr(scan_url)
     qr_wifi = None
     wifi_ssid = biz.get("wifi_ssid", "")
@@ -165,7 +165,7 @@ def download_pdf(biz_id):
         return "Negocio no encontrado", 404
 
     # QR
-    scan_url = f"http://192.168.50.178:5000/scan/{biz_id}"
+    scan_url = f"https://zuppon.es/scan/{biz_id}"
     qr = qrcode.QRCode(box_size=8, border=2)
     qr.add_data(scan_url)
     qr.make(fit=True)
