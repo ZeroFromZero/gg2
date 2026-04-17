@@ -198,8 +198,8 @@ label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text)
 .req { color: var(--accent); }
 
 .input-icon-wrap { position: relative; }
-.input-icon { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 0.9rem; pointer-events: none; }
-.input-icon-wrap input { padding-left: 2.4rem; }
+.input-icon { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 0.9rem; pointer-events: none; line-height: 1; }
+.input-icon-wrap input { padding-left: 2.8rem; }
 
 input[type="text"], input[type="tel"], input[type="email"], input[type="url"], textarea {
   width: 100%; padding: 0.72rem 1rem;
