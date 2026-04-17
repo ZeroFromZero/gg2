@@ -103,9 +103,11 @@ def index():
             "email": request.form["email"],
             "address": request.form["address"],
             "website": request.form.get("website", ""),
+            "maps_url": request.form.get("maps_url", ""),
             "description": request.form.get("description", ""),
             "instagram": request.form.get("instagram", ""),
             "facebook": request.form.get("facebook", ""),
+            "tiktok": request.form.get("tiktok", ""),
             "wifi_ssid": request.form.get("wifi_ssid", ""),
             "wifi_password": request.form.get("wifi_password", ""),
             "access_code": request.form.get("access_code_new", "").strip().upper(),
@@ -320,18 +322,41 @@ def edit(biz_id):
         biz["email"]       = request.form.get("email", biz["email"])
         biz["address"]     = request.form.get("address", biz["address"])
         biz["website"]     = request.form.get("website", biz.get("website", ""))
+        biz["maps_url"]    = request.form.get("maps_url", biz.get("maps_url", ""))
         biz["instagram"]   = request.form.get("instagram", biz.get("instagram", ""))
         biz["facebook"]    = request.form.get("facebook", biz.get("facebook", ""))
+        biz["tiktok"]      = request.form.get("tiktok", biz.get("tiktok", ""))
+        print("DEBUG tiktok:", repr(request.form.get("tiktok")))
+        print("DEBUG form keys:", list(request.form.keys()))
         businesses[biz_id] = biz
         save_businesses(businesses)
         return redirect(url_for("card", biz_id=biz_id))
 
     return render_template("edit.html", biz=biz, biz_id=biz_id)
 
-@app.route("/admin")
+ADMIN_USER = "AdminL"
+ADMIN_PASS = "Caacupe2025"
+
+@app.route("/admin", methods=["GET", "POST"])
 def admin():
+    if not session.get("admin_logged_in"):
+        error = None
+        if request.method == "POST":
+            u = request.form.get("username", "")
+            p = request.form.get("password", "")
+            if u == ADMIN_USER and p == ADMIN_PASS:
+                session["admin_logged_in"] = True
+                return redirect(url_for("admin"))
+            error = "Credenciales incorrectas"
+        return render_template("admin_login.html", error=error)
     businesses = load_businesses()
     return render_template("admin.html", businesses=businesses)
+
+@app.route("/admin/logout")
+def admin_logout():
+    session.pop("admin_logged_in", None)
+    return redirect(url_for("index"))
+
 
 @app.route("/admin/delete/<biz_id>", methods=["POST"])
 def delete_business(biz_id):
