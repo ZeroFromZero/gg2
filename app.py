@@ -12,6 +12,11 @@ from PIL import Image
 app = Flask(__name__)
 app.secret_key = "qrcard-secret-2025"
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
+@app.context_processor
+def inject_version():
+    import time
+    return {'css_v': int(time.time())}
 DATA_FILE = "businesses.json"
 UPLOAD_FOLDER = os.path.join("static", "uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif"}
@@ -147,6 +152,172 @@ def print_public(biz_id):
     qr_img = generate_qr(scan_url)
     profile_url = f"https://zuppon.es/p/{biz_id}"
     return render_template("card.html", biz=biz, biz_id=biz_id, qr_img=qr_img, profile_url=profile_url, shared=True)
+
+@app.route("/promo/<biz_id>")
+def promo_image(biz_id):
+    businesses = load_businesses()
+    biz = businesses.get(biz_id)
+    if not biz:
+        return "Negocio no encontrado", 404
+
+    from PIL import Image, ImageDraw, ImageFont, ImageFilter
+    import textwrap, math
+
+    W, H = 1080, 1920
+    img = Image.new("RGB", (W, H), (10, 12, 20))
+    draw = ImageDraw.Draw(img)
+
+    # ── Fondo degradado oscuro ──
+    for y in range(H):
+        t = y / H
+        r = int(10 + 18 * t)
+        g = int(12 + 10 * t)
+        b = int(20 + 35 * t)
+        draw.line([(0, y), (W, y)], fill=(r, g, b))
+
+    # ── Glow violeta arriba ──
+    glow = Image.new("RGB", (W, H), (0, 0, 0))
+    gd = ImageDraw.Draw(glow)
+    for i in range(180, 0, -1):
+        alpha = int(60 * (i / 180) ** 2)
+        gd.ellipse([W//2 - i*3, -i*2, W//2 + i*3, i*2],
+                   fill=(int(alpha*0.39), int(alpha*0.40), int(alpha*0.95)))
+    glow = glow.filter(ImageFilter.GaussianBlur(60))
+    img = Image.blend(img, glow, 0.6)
+    draw = ImageDraw.Draw(img)
+
+    # ── Glow verde abajo ──
+    glow2 = Image.new("RGB", (W, H), (0, 0, 0))
+    gd2 = ImageDraw.Draw(glow2)
+    for i in range(120, 0, -1):
+        alpha = int(40 * (i / 120) ** 2)
+        gd2.ellipse([W//2 - i*3, H - i*2, W//2 + i*3, H + i*2],
+                    fill=(0, int(alpha*0.83), int(alpha*0.40)))
+    glow2 = glow2.filter(ImageFilter.GaussianBlur(80))
+    img = Image.blend(img, glow2, 0.5)
+    draw = ImageDraw.Draw(img)
+
+    # ── Fuentes ──
+    fb = "C:/Windows/Fonts/arialbd.ttf"
+    fr = "C:/Windows/Fonts/arial.ttf"
+    try:
+        f_name  = ImageFont.truetype(fb, 108)
+        f_big   = ImageFont.truetype(fb, 56)
+        f_med   = ImageFont.truetype(fb, 40)
+        f_small = ImageFont.truetype(fr, 34)
+        f_tiny  = ImageFont.truetype(fr, 28)
+        f_brand = ImageFont.truetype(fb, 48)
+    except:
+        f_name = f_big = f_med = f_small = f_tiny = f_brand = ImageFont.load_default()
+
+    def centered(text, font, y, color):
+        tw = int(draw.textlength(text, font=font))
+        draw.text(((W - tw) // 2, y), text, font=font, fill=color)
+        return y + int(font.size * 1.3)
+
+    # ── Badge categoría ──
+    cat = biz.get("category", "Negocio").upper()
+    bw = int(draw.textlength(cat, font=f_tiny)) + 64
+    bx = (W - bw) // 2
+    draw.rounded_rectangle([bx, 160, bx + bw, 218], radius=29, fill=(37, 40, 90))
+    draw.rounded_rectangle([bx, 160, bx + bw, 218], radius=29, outline=(99, 102, 241), width=2)
+    tw = int(draw.textlength(cat, font=f_tiny))
+    draw.text(((W - tw) // 2, 168), cat, font=f_tiny, fill=(165, 180, 252))
+
+    # ── Nombre ──
+    name = biz["name"]
+    lines = textwrap.wrap(name, width=12)
+    y = 260
+    for line in lines[:3]:
+        tw = int(draw.textlength(line, font=f_name))
+        draw.text(((W - tw) // 2, y), line, font=f_name, fill=(255, 255, 255))
+        y += 120
+
+    # ── Línea decorativa ──
+    lw = 80
+    draw.rounded_rectangle([(W//2 - lw, y + 18), (W//2 + lw, y + 28)], radius=5, fill=(99, 102, 241))
+    y += 60
+
+    # ── QR ──
+    profile_url = f"https://zuppon.es/p/{biz_id}"
+    qr_obj = qrcode.QRCode(box_size=13, border=2)
+    qr_obj.add_data(profile_url)
+    qr_obj.make(fit=True)
+    qr_pil = qr_obj.make_image(fill_color="#0f172a", back_color="white").convert("RGB")
+    qr_size = 480
+    qr_pil = qr_pil.resize((qr_size, qr_size), Image.LANCZOS)
+
+    pad = 28
+    qr_x = (W - qr_size) // 2
+    qr_y = y
+    # Sombra del QR
+    shadow = Image.new("RGB", (W, H), (10, 12, 20))
+    sd = ImageDraw.Draw(shadow)
+    sd.rounded_rectangle([qr_x - pad - 8, qr_y - pad - 8,
+                           qr_x + qr_size + pad + 8, qr_y + qr_size + pad + 8],
+                          radius=36, fill=(0, 0, 0))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(18))
+    img = Image.blend(img, shadow, 0.5)
+    draw = ImageDraw.Draw(img)
+    # Marco blanco
+    draw.rounded_rectangle([qr_x - pad, qr_y - pad,
+                             qr_x + qr_size + pad, qr_y + qr_size + pad],
+                            radius=28, fill=(255, 255, 255))
+    img.paste(qr_pil, (qr_x, qr_y))
+    draw = ImageDraw.Draw(img)
+
+    y = qr_y + qr_size + pad + 48
+
+    # ── Escanea ──
+    tw = int(draw.textlength("Escanea el QR para visitarnos", font=f_small))
+    draw.text(((W - tw) // 2, y), "Escanea el QR para visitarnos", font=f_small, fill=(148, 163, 184))
+    y += 52
+
+    # ── URL ──
+    url_short = profile_url.replace("https://", "")
+    tw = int(draw.textlength(url_short, font=f_med))
+    draw.text(((W - tw) // 2, y), url_short, font=f_med, fill=(99, 102, 241))
+    y += 70
+
+    # ── Separador ──
+    draw.line([(W//2 - 200, y), (W//2 + 200, y)], fill=(30, 35, 60), width=2)
+    y += 36
+
+    # ── Contacto ──
+    if biz.get("phone"):
+        t = "📞  " + biz["phone"]
+        tw = int(draw.textlength(t, font=f_small))
+        draw.text(((W - tw) // 2, y), t, font=f_small, fill=(203, 213, 225))
+        y += 52
+    if biz.get("address"):
+        t = "📍  " + biz["address"][:36]
+        tw = int(draw.textlength(t, font=f_small))
+        draw.text(((W - tw) // 2, y), t, font=f_small, fill=(203, 213, 225))
+        y += 52
+
+    # ── BRANDING ZUPPON destacado ──
+    brand_y = H - 160
+    # Fondo pill verde
+    btext = "Zuppon"
+    btw = int(draw.textlength(btext, font=f_brand))
+    bpw = btw + 80
+    bpx = (W - bpw) // 2
+    draw.rounded_rectangle([bpx, brand_y, bpx + bpw, brand_y + 76], radius=38, fill=(5, 150, 105))
+    draw.text(((W - btw) // 2, brand_y + 10), btext, font=f_brand, fill=(255, 255, 255))
+    # Subtítulo
+    sub = "Tu negocio digital"
+    stw = int(draw.textlength(sub, font=f_tiny))
+    draw.text(((W - stw) // 2, brand_y + 90), sub, font=f_tiny, fill=(52, 211, 153))
+
+    # ── Exportar ──
+    buf = io.BytesIO()
+    img.save(buf, format="PNG", optimize=True)
+    buf.seek(0)
+    response = make_response(buf.read())
+    response.headers["Content-Type"] = "image/png"
+    safe_name = biz["name"].replace(" ", "_")
+    response.headers["Content-Disposition"] = f'attachment; filename="{safe_name}_promo.png"'
+    return response
 
 @app.route("/scan/<biz_id>")
 def scan(biz_id):

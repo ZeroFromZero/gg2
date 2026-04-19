@@ -418,3 +418,57 @@
 
 .cr-action-btn.pdf { background: rgba(239,68,68,0.12); color: #fca5a5; border: 1px solid rgba(239,68,68,0.2); }
 .cr-action-btn.pdf:hover { background: rgba(239,68,68,0.22); }
+
+/* ── WHATSAPP PROMO ── */
+.wa-promo {
+  max-width: 1200px; margin: 0 auto;
+  padding: 1.5rem 2rem 2.5rem;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.wa-promo-inner {
+  display: flex; align-items: center; gap: 1rem;
+  background: rgba(37,211,102,0.08);
+  border: 1px solid rgba(37,211,102,0.2);
+  border-radius: 14px; padding: 1.1rem 1.25rem;
+  flex-wrap: wrap;
+}
+.wa-promo-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(37,211,102,0.15);
+  color: #4ade80;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.wa-promo-text { flex: 1; min-width: 180px; }
+.wa-promo-text strong { display: block; font-size: 0.88rem; font-weight: 700; color: white; margin-bottom: 0.2rem; }
+.wa-promo-text span { font-size: 0.78rem; color: rgba(255,255,255,0.4); line-height: 1.5; }
+.wa-promo-copy {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(37,211,102,0.15); color: #4ade80;
+  border: 1px solid rgba(37,211,102,0.25); border-radius: 9px;
+  padding: 0.6rem 1.1rem; font-size: 0.82rem; font-weight: 700;
+  font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s;
+  white-space: nowrap;
+}
+.wa-promo-copy:hover { background: rgba(37,211,102,0.25); }
+.wa-promo-msg {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 1rem 1.25rem;
+}
+.wa-msg-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.25); margin-bottom: 0.6rem; }
+.wa-msg-content {
+  font-size: 0.85rem; color: rgba(255,255,255,0.6);
+  line-height: 1.7; white-space: pre-line;
+  font-family: 'Inter', sans-serif;
+}
+.wa-promo-btn {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: #25d366; color: white;
+  border-radius: 11px; padding: 0.8rem 1.5rem;
+  font-size: 0.9rem; font-weight: 700;
+  text-decoration: none; transition: all 0.2s;
+  align-self: flex-start;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+}
+.wa-promo-btn:hover { background: #1ebe5d; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(37,211,102,0.4); }
