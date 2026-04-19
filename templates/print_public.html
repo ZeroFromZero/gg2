@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  <title>Imprimir tarjeta — {{ biz.name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='card.css') }}">
+  <style>
+    body { background: #0f1117; }
+
+    .print-page {
+      max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* HEADER */
+    .pp-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .pp-title { font-size: 1.1rem; font-weight: 700; color: white; }
+    .pp-sub { font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-top: 0.2rem; }
+
+    /* THEME SELECTOR */
+    .pp-themes {
+      display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+    .pp-theme-btn {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 0.45rem 0.9rem;
+      cursor: pointer; font-size: 0.78rem; font-weight: 600;
+      color: rgba(255,255,255,0.5); font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+    .pp-theme-btn:hover { border-color: rgba(255,255,255,0.25); color: white; }
+    .pp-theme-btn.active { border-color: #6366f1; color: #a5b4fc; background: rgba(99,102,241,0.12); }
+    .pp-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* CARD PREVIEW */
+    .pp-card-wrap {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem;
+    }
+
+    /* PRINT BUTTON */
+    .pp-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .pp-btn-print {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white; border: none; border-radius: 10px;
+      padding: 0.8rem 1.5rem; font-size: 0.9rem; font-weight: 700;
+      font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(99,102,241,0.35);
+    }
+    .pp-btn-print:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(99,102,241,0.45); }
+    .pp-btn-pdf {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: rgba(239,68,68,0.12); color: #fca5a5;
+      border: 1px solid rgba(239,68,68,0.2); border-radius: 10px;
+      padding: 0.8rem 1.5rem; font-size: 0.9rem; font-weight: 700;
+      font-family: 'Inter', sans-serif; text-decoration: none; transition: all 0.2s;
+    }
+    .pp-btn-pdf:hover { background: rgba(239,68,68,0.22); }
+
+    .pp-notice {
+      margin-top: 1.25rem;
+      background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 10px; padding: 0.85rem 1rem;
+      font-size: 0.8rem; color: rgba(255,255,255,0.4); line-height: 1.6;
+      display: flex; align-items: flex-start; gap: 0.6rem;
+    }
+    .pp-notice svg { flex-shrink: 0; margin-top: 1px; color: #818cf8; }
+
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- sin navbar -->
+
+  <div class="print-page">
+
+    <div class="pp-header no-print">
+      <div>
+        <div class="pp-title">Tarjeta de {{ biz.name }}</div>
+        <div class="pp-sub">Vista de impresión · Solo lectura</div>
+      </div>
+    </div>
+
+    <!-- THEME SELECTOR -->
+    <div class="pp-themes no-print" id="themeBar">
+      <button class="pp-theme-btn active" data-theme="bc-dark">
+        <span class="pp-dot" style="background:linear-gradient(135deg,#0f172a,#1e1b4b)"></span> Oscuro
+      </button>
+      <button class="pp-theme-btn" data-theme="bc-light">
+        <span class="pp-dot" style="background:linear-gradient(135deg,#f8fafc,#e2e8f0);border:1px solid #e2e8f0"></span> Claro
+      </button>
+      <button class="pp-theme-btn" data-theme="bc-violet">
+        <span class="pp-dot" style="background:linear-gradient(135deg,#4c1d95,#7c3aed)"></span> Violeta
+      </button>
+      <button class="pp-theme-btn" data-theme="bc-ocean">
+        <span class="pp-dot" style="background:linear-gradient(135deg,#0c4a6e,#0284c7)"></span> Océano
+      </button>
+      <button class="pp-theme-btn" data-theme="bc-forest">
+        <span class="pp-dot" style="background:linear-gradient(135deg,#14532d,#16a34a)"></span> Bosque
+      </button>
+      <button class="pp-theme-btn" data-theme="bc-rose">
+        <span class="pp-dot" style="background:linear-gradient(135deg,#881337,#e11d48)"></span> Rosa
+      </button>
+    </div>
+
+    <!-- CARD PREVIEW -->
+    <div class="pp-card-wrap">
+      <div class="bc bc-dark" id="previewCard">
+        <div class="bc-inner">
+          <div class="bc-left">
+            <div class="bc-logo">
+              {% if biz.logo %}
+                <img src="{{ url_for('static', filename='uploads/' ~ biz.logo) }}" alt="{{ biz.name }}">
+              {% else %}
+                <span>{{ biz.name[0] | upper }}</span>
+              {% endif %}
+            </div>
+            <div class="bc-name">{{ biz.name }}</div>
+            <div class="bc-cat">{{ biz.category }}</div>
+            <div class="bc-contacts">
+              <div class="bc-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                <span>{{ biz.phone }}</span>
+              </div>
+              <div class="bc-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span>{{ biz.email }}</span>
+              </div>
+              <div class="bc-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>{{ biz.address }}</span>
+              </div>
+              {% if biz.website %}
+              <div class="bc-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                <span>{{ biz.website | replace('https://','') | replace('http://','') }}</span>
+              </div>
+              {% endif %}
+              {% if biz.instagram %}
+              <div class="bc-row">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                <span>{{ biz.instagram }}</span>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="bc-sep"></div>
+          <div class="bc-right">
+            <div class="bc-qr-wrap">
+              <img src="data:image/png;base64,{{ qr_img }}" alt="QR">
+            </div>
+            <div class="bc-scan">Escanea el QR</div>
+            <div class="bc-brand">Zuppon</div>
+          </div>
+        </div>
+        <div class="bc-glow1"></div>
+        <div class="bc-glow2"></div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="pp-actions no-print">
+      <button class="pp-btn-print" onclick="window.print()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Imprimir
+      </button>
+      <a href="{{ url_for('download_pdf', biz_id=biz_id) }}" class="pp-btn-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        Descargar PDF
+      </a>
+    </div>
+
+    <div class="pp-notice no-print">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Esta página es de solo lectura. No permite editar ni acceder a la información del negocio. Solo puedes imprimir o descargar la tarjeta.
+    </div>
+
+  </div>
+
+  <!-- PRINT ONLY: 6 tarjetas -->
+  <div class="print-only" id="printSheet">
+    <div class="print-header">{{ biz.name }} — Recortar por las líneas</div>
+    <div class="print-grid" id="printGrid">
+      {% for i in range(6) %}
+      <div class="pc-cell">
+        <div class="pc bc bc-dark">
+          <div class="bc-inner">
+            <div class="bc-left">
+              <div class="bc-logo">
+                {% if biz.logo %}<img src="{{ url_for('static', filename='uploads/' ~ biz.logo) }}" alt="">{% else %}<span>{{ biz.name[0] | upper }}</span>{% endif %}
+              </div>
+              <div class="bc-name">{{ biz.name }}</div>
+              <div class="bc-cat">{{ biz.category }}</div>
+              <div class="bc-contacts">
+                <div class="bc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg><span>{{ biz.phone }}</span></div>
+                <div class="bc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>{{ biz.email }}</span></div>
+                <div class="bc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>{{ biz.address }}</span></div>
+                {% if biz.website %}<div class="bc-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg><span>{{ biz.website | replace('https://','') | replace('http://','') }}</span></div>{% endif %}
+              </div>
+            </div>
+            <div class="bc-sep"></div>
+            <div class="bc-right">
+              <div class="bc-qr-wrap"><img src="data:image/png;base64,{{ qr_img }}" alt="QR"></div>
+              <div class="bc-scan">Escanea el QR</div>
+              <div class="bc-brand">Zuppon</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.pp-theme-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const theme = btn.dataset.theme;
+        document.getElementById('previewCard').className = 'bc ' + theme;
+        document.querySelectorAll('#printGrid .pc').forEach(c => c.className = 'pc bc ' + theme);
+        document.querySelectorAll('.pp-theme-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

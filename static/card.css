@@ -126,7 +126,7 @@
   align-self: flex-start;
 }
 .cr-card-stage {
-  width: 100%; max-width: 680px;
+  width: 100%; max-width: 520px;
   display: flex; align-items: center; justify-content: center;
 }
 
@@ -141,33 +141,33 @@
 }
 .bc-inner {
   display: flex; align-items: stretch; gap: 0;
-  position: relative; z-index: 2; min-height: 220px;
+  position: relative; z-index: 2; min-height: 180px;
 }
-.bc-left { flex: 1; padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+.bc-left { flex: 1; padding: 2.8rem 3rem; display: flex; flex-direction: column; justify-content: center; }
 .bc-logo {
-  width: 56px; height: 56px; border-radius: 12px;
+  width: 46px; height: 46px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.6rem; font-weight: 900; margin-bottom: 1.2rem;
+  font-size: 1.3rem; font-weight: 900; margin-bottom: 0.9rem;
   overflow: hidden; flex-shrink: 0;
 }
 .bc-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
-.bc-name { font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.35rem; line-height: 1.1; }
+.bc-name { font-size: 1.3rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.25rem; line-height: 1.1; }
 .bc-cat {
-  display: inline-block; font-size: 0.72rem; font-weight: 700;
-  padding: 0.22rem 0.8rem; border-radius: 20px; margin-bottom: 1.4rem;
+  display: inline-block; font-size: 0.65rem; font-weight: 700;
+  padding: 0.18rem 0.65rem; border-radius: 20px; margin-bottom: 1rem;
   letter-spacing: 0.04em;
 }
 .bc-contacts { display: flex; flex-direction: column; gap: 0.45rem; }
 .bc-row { display: flex; align-items: center; gap: 0.55rem; font-size: 0.8rem; }
 .bc-row svg { width: 12px; height: 12px; flex-shrink: 0; opacity: 0.6; }
-.bc-sep { width: 1px; margin: 2rem 0; flex-shrink: 0; }
+.bc-sep { width: 1px; align-self: center; height: 40%; flex-shrink: 0; opacity: 0.2; }
 .bc-right {
-  padding: 2.5rem 2.5rem 2.5rem 2rem;
+  padding: 2.8rem 3rem 2.8rem 2.2rem;
   display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 0.75rem; flex-shrink: 0;
+  align-items: center; justify-content: center; gap: 0.6rem; flex-shrink: 0;
 }
-.bc-qr-wrap { padding: 10px; border-radius: 12px; }
-.bc-qr-wrap img { display: block; width: 120px; height: 120px; }
+.bc-qr-wrap { padding: 8px; border-radius: 12px; }
+.bc-qr-wrap img { display: block; width: 100px; height: 100px; }
 .bc-scan { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.18em; }
 .bc-brand { font-size: 0.65rem; font-weight: 700; opacity: 0.35; letter-spacing: 0.06em; }
 .bc-glow1, .bc-glow2 { position: absolute; border-radius: 50%; pointer-events: none; }
@@ -318,7 +318,7 @@
   .pc-cell .bc-left {
     flex: 1;
     min-width: 0;
-    padding: 5mm 3mm 5mm 6mm;
+    padding: 7mm 5mm 7mm 8mm;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -357,13 +357,13 @@
   .pc-cell .bc-row svg { width: 3mm; height: 3mm; flex-shrink: 0; opacity: 0.55; }
 
   /* Separador vertical */
-  .pc-cell .bc-sep { width: 0.3mm; flex-shrink: 0; margin: 5mm 0; }
+  .pc-cell .bc-sep { width: 0.2mm; align-self: center; height: 35%; flex-shrink: 0; opacity: 0.2; }
 
   /* QR a la derecha, centrado verticalmente */
   .pc-cell .bc-right {
     flex-shrink: 0;
     width: 38mm;
-    padding: 5mm 5mm 5mm 3mm;
+    padding: 7mm 7mm 7mm 4mm;
     display: flex;
     flex-direction: column;
     align-items: center;

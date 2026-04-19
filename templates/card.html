@@ -2,28 +2,61 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tu QR Card — {{ biz.name }}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='card.css') }}">
+  <title>{% if shared %}Imprimir tarjeta — {{ biz.name }}{% else %}Tu QR Card — {{ biz.name }}{% endif %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=4">
+  <link rel="stylesheet" href="{{ url_for('static', filename='card.css') }}?v=4">
+  {% if shared %}
+  <style>
+    .shared-bar {
+      background: #0f1117; border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .shared-bar-info { font-size: 0.82rem; color: rgba(255,255,255,0.35); }
+    .shared-bar-info strong { color: rgba(255,255,255,0.7); }
+    .shared-print-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white; border: none; border-radius: 9px;
+      padding: 0.6rem 1.2rem; font-size: 0.85rem; font-weight: 700;
+      font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s;
+    }
+    .shared-print-btn:hover { opacity: 0.9; }
+    .cr-layout { grid-template-columns: 1fr !important; }
+    .cr-sidebar { display: none !important; }
+    .cr-preview { padding: 2rem !important; }
+  </style>
+  {% endif %}
 </head>
 <body class="card-result-page">
 
   <!-- NAVBAR -->
+  {% if shared %}
+  <div class="shared-bar no-print">
+    <div class="shared-bar-info">Vista de impresión · <strong>{{ biz.name }}</strong> · Solo lectura</div>
+    <button class="shared-print-btn" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimir
+    </button>
+  </div>
+  {% else %}
   <nav class="navbar no-print">
     <a href="/" class="navbar-brand">
-      <div class="brand-logo">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
-      </div>
-      QRCard
+      <img src="/static/zuppon_logo.png" alt="Zuppon" style="height:62px;object-fit:contain;">
+      Zuppon
     </a>
     <div class="navbar-links">
       <a href="{{ url_for('profile', biz_id=biz_id) }}" class="nav-link" target="_blank">Ver perfil →</a>
-      <a href="/" class="btn-sm-primary">+ Nueva tarjeta</a>
+      <a href="/zuppon" class="nav-link">Tiendas</a>
+      <a href="/qrcard" class="btn-sm-primary">+ Nueva tarjeta</a>
     </div>
   </nav>
+  {% endif %}
 
   <!-- SUCCESS BANNER -->
+  {% if not shared %}
   <div class="success-banner no-print">
     <div class="success-banner-inner">
       <div class="success-check">
@@ -35,6 +68,7 @@
       </div>
     </div>
   </div>
+  {% endif %}
 
   <div class="cr-layout no-print">
 
@@ -77,10 +111,11 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
             Imprimir tarjeta
           </button>
-          <a href="{{ url_for('download_pdf', biz_id=biz_id) }}" class="cr-action-btn pdf">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-            Descargar PDF
-          </a>          <a href="{{ url_for('edit', biz_id=biz_id) }}" class="cr-action-btn edit">
+          <button onclick="shareprint()" class="cr-action-btn success">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Compartir para imprimir
+          </button>
+          <a href="{{ url_for('edit', biz_id=biz_id) }}" class="cr-action-btn edit">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             Editar información
           </a>
@@ -92,7 +127,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
             Mis productos
           </a>
-          <a href="/" class="cr-action-btn outline">
+          <a href="/qrcard" class="cr-action-btn outline">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Crear otra tarjeta
           </a>
@@ -280,6 +315,17 @@
       setTimeout(() => { window.print(); tip.remove(); }, 800);
     }
 
+    function shareprint() {
+      const url = window.location.origin + '/print/{{ biz_id }}';
+      navigator.clipboard.writeText(url).then(() => {
+        const toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;top:1.2rem;left:50%;transform:translateX(-50%);background:#10b981;color:white;padding:0.75rem 1.5rem;border-radius:12px;font-size:0.85rem;font-family:Inter,sans-serif;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.3);display:flex;align-items:center;gap:0.5rem;';
+        toast.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> ¡Enlace copiado! Compártelo para imprimir.';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      });
+    }
+
     function copyLink() {
       const input = document.getElementById("profileUrl");
       const btn = document.getElementById("copyBtn");
@@ -295,3 +341,4 @@
   </script>
 </body>
 </html>
+

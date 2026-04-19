@@ -11,6 +11,7 @@ from PIL import Image
 
 app = Flask(__name__)
 app.secret_key = "qrcard-secret-2025"
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 DATA_FILE = "businesses.json"
 UPLOAD_FOLDER = os.path.join("static", "uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif"}
@@ -134,7 +135,18 @@ def card(biz_id):
     wifi_pass = biz.get("wifi_password", "")
     if wifi_ssid:
         qr_wifi = generate_qr(f"WIFI:T:WPA;S:{wifi_ssid};P:{wifi_pass};;")
-    return render_template("card.html", biz=biz, qr_img=qr_profile, qr_wifi=qr_wifi, profile_url=profile_url, biz_id=biz_id)
+    return render_template("card.html", biz=biz, qr_img=qr_profile, qr_wifi=qr_wifi, profile_url=profile_url, biz_id=biz_id, shared=False)
+
+@app.route("/print/<biz_id>")
+def print_public(biz_id):
+    businesses = load_businesses()
+    biz = businesses.get(biz_id)
+    if not biz:
+        return "Tarjeta no encontrada", 404
+    scan_url = f"https://zuppon.es/scan/{biz_id}"
+    qr_img = generate_qr(scan_url)
+    profile_url = f"https://zuppon.es/p/{biz_id}"
+    return render_template("card.html", biz=biz, biz_id=biz_id, qr_img=qr_img, profile_url=profile_url, shared=True)
 
 @app.route("/scan/<biz_id>")
 def scan(biz_id):
