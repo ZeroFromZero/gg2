@@ -5,15 +5,19 @@
   <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
   <title>Imprimir — {{ biz.name }}</title>
   <style>
-    @page { size: A4 portrait; margin: 10mm; }
+    @page { size: A4 portrait; margin: 8mm; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: white; }
 
-    @media print { .screen-bar { display: none !important; } }
+    @media print {
+      .screen-bar { display: none !important; }
+      .page-wrap { padding: 0 !important; }
+    }
 
     .screen-bar {
       background: #0f172a; padding: 14px 32px;
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      position: sticky; top: 0; z-index: 100;
     }
     .screen-bar-info { font-size: 13px; color: rgba(255,255,255,0.4); font-family: Arial, sans-serif; }
     .screen-bar-info strong { color: white; }
@@ -25,25 +29,24 @@
       font-family: Arial, sans-serif; cursor: pointer;
     }
 
-    /* ── GRID: 2 col × 4 filas, tarjeta crédito 85.6×54mm ── */
-    .page-wrap { width: 190mm; margin: 0 auto; }
+    .page-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 24px 0;
+    }
     .cards-header {
       font-size: 6pt; color: #94a3b8; text-align: center;
-      margin-bottom: 3.5mm; letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 4mm; letter-spacing: 0.08em; text-transform: uppercase;
     }
     .cards-grid {
       display: grid;
-      grid-template-columns: 85.6mm 85.6mm;
-      grid-template-rows: repeat(4, 54mm);
-      gap: 4.5mm 4.5mm;
-      width: 175.7mm;
-      margin: 0 auto;
+      grid-template-columns: 96mm 96mm;
+      grid-template-rows: repeat(3, 61mm);
+      gap: 4mm 4mm;
     }
 
-    /* ── TARJETA 85.6 × 54mm ── */
     .card {
-      width: 85.6mm; height: 54mm;
-      border-radius: 3.5mm;
+      width: 96mm; height: 61mm;
+      border-radius: 4mm;
       overflow: hidden;
       background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%);
       display: flex; flex-direction: row;
@@ -53,68 +56,64 @@
 
     .card-left {
       flex: 1; min-width: 0;
-      padding: 4.5mm 3mm 4.5mm 5.5mm;
+      padding: 6mm 3.5mm 6mm 7mm;
       display: flex; flex-direction: column; justify-content: center;
       overflow: hidden;
     }
 
     .logo {
-      width: 8.5mm; height: 8.5mm; border-radius: 1.8mm;
+      width: 10.5mm; height: 10.5mm; border-radius: 2.2mm;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
       display: flex; align-items: center; justify-content: center;
-      font-size: 4.5mm; font-weight: 900; color: white;
-      margin-bottom: 1.8mm; overflow: hidden; flex-shrink: 0;
+      font-size: 5mm; font-weight: 900; color: white;
+      margin-bottom: 2mm; overflow: hidden; flex-shrink: 0;
     }
-    .logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 1.2mm; }
+    .logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 1.6mm; }
 
     .biz-name {
-      font-size: 8.5pt; font-weight: 900; color: white;
-      letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 0.8mm;
+      font-size: 10.5pt; font-weight: 900; color: white;
+      letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1mm;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .biz-cat {
-      display: inline-block; font-size: 4.8pt; font-weight: 700;
+      display: inline-block; font-size: 5.5pt; font-weight: 700;
       background: rgba(99,102,241,0.25); color: #a5b4fc;
       border: 1px solid rgba(99,102,241,0.35);
-      padding: 0.3mm 1.8mm; border-radius: 3.5mm; margin-bottom: 2mm;
+      padding: 0.4mm 2mm; border-radius: 3.5mm; margin-bottom: 2.5mm;
     }
 
-    .contacts { display: flex; flex-direction: column; gap: 0.9mm; }
+    .contacts { display: flex; flex-direction: column; gap: 1.1mm; }
     .row {
-      display: flex; align-items: center; gap: 1.3mm;
-      font-size: 5.5pt; color: rgba(255,255,255,0.65);
+      display: flex; align-items: center; gap: 1.5mm;
+      font-size: 6.5pt; color: rgba(255,255,255,0.65);
       white-space: nowrap; overflow: hidden;
     }
-    .row svg { width: 2.2mm; height: 2.2mm; flex-shrink: 0; opacity: 0.6; }
+    .row svg { width: 2.6mm; height: 2.6mm; flex-shrink: 0; opacity: 0.6; }
 
     .sep {
-      width: 0.2mm;
-      background: rgba(255,255,255,0.12);
-      flex-shrink: 0;
-      align-self: center;
-      height: 32%;
+      width: 0.2mm; background: rgba(255,255,255,0.12);
+      flex-shrink: 0; align-self: center; height: 32%;
     }
 
     .card-right {
-      width: 25mm; flex-shrink: 0;
-      padding: 4mm 4mm 4mm 2.5mm;
+      width: 29mm; flex-shrink: 0;
+      padding: 5.5mm 5.5mm 5.5mm 3mm;
       display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 1.2mm;
+      align-items: center; justify-content: center; gap: 1.6mm;
     }
 
     .qr-wrap {
-      background: white; padding: 1.2mm; border-radius: 1.8mm;
-      box-shadow: 0 1mm 4mm rgba(0,0,0,0.4);
+      background: white; padding: 1.6mm; border-radius: 2.2mm;
+      box-shadow: 0 1.5mm 5mm rgba(0,0,0,0.4);
     }
-    .qr-wrap img { width: 17mm; height: 17mm; display: block; }
+    .qr-wrap img { width: 20mm; height: 20mm; display: block; }
 
     .scan-text {
-      font-size: 4pt; font-weight: 700;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 0.1em; text-align: center;
+      font-size: 4.8pt; font-weight: 700;
+      color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-align: center;
     }
     .brand {
-      font-size: 4.5pt; font-weight: 700;
+      font-size: 4.8pt; font-weight: 700;
       color: rgba(255,255,255,0.22); letter-spacing: 0.08em;
     }
   </style>
@@ -124,7 +123,7 @@
   <!-- BARRA PANTALLA -->
   <div class="screen-bar">
     <div class="screen-bar-info">
-      Impresión de tarjetas · <strong>{{ biz.name }}</strong> · 8 tarjetas por hoja A4
+      Impresión de tarjetas · <strong>{{ biz.name }}</strong> · 6 tarjetas por hoja A4
     </div>
     <button class="btn-print" onclick="window.print()">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -139,7 +138,7 @@
   <div class="page-wrap">
     <div class="cards-header">{{ biz.name }} &nbsp;·&nbsp; Recortar por las líneas punteadas</div>
     <div class="cards-grid">
-      {% for i in range(8) %}
+      {% for i in range(6) %}
       <div class="card">
         <div class="card-left">
           <div class="logo">
