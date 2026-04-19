@@ -134,7 +134,7 @@
    BUSINESS CARD COMPONENT
 ═══════════════════════════════════════════════ */
 .bc {
-  width: 100%; border-radius: 0;
+  width: 100%; border-radius: 16px;
   position: relative; overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
   box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.3);
@@ -145,16 +145,16 @@
 }
 .bc-left { flex: 1; padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
 .bc-logo {
-  width: 56px; height: 56px; border-radius: 0;
+  width: 56px; height: 56px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
   font-size: 1.6rem; font-weight: 900; margin-bottom: 1.2rem;
   overflow: hidden; flex-shrink: 0;
 }
-.bc-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+.bc-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
 .bc-name { font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.35rem; line-height: 1.1; }
 .bc-cat {
   display: inline-block; font-size: 0.72rem; font-weight: 700;
-  padding: 0.22rem 0.8rem; border-radius: 0; margin-bottom: 1.4rem;
+  padding: 0.22rem 0.8rem; border-radius: 20px; margin-bottom: 1.4rem;
   letter-spacing: 0.04em;
 }
 .bc-contacts { display: flex; flex-direction: column; gap: 0.45rem; }
@@ -166,7 +166,7 @@
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 0.75rem; flex-shrink: 0;
 }
-.bc-qr-wrap { padding: 10px; border-radius: 0; }
+.bc-qr-wrap { padding: 10px; border-radius: 12px; }
 .bc-qr-wrap img { display: block; width: 120px; height: 120px; }
 .bc-scan { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.18em; }
 .bc-brand { font-size: 0.65rem; font-weight: 700; opacity: 0.35; letter-spacing: 0.06em; }
@@ -298,7 +298,7 @@
   .pc-cell .pc.bc {
     width: 105mm;
     height: 68mm;
-    border-radius: 0;
+    border-radius: 8px;
     box-shadow: none !important;
     position: relative;
     overflow: hidden;
@@ -328,13 +328,13 @@
 
   .pc-cell .bc-logo {
     width: 12mm; height: 12mm;
-    border-radius: 0;
+    border-radius: 3mm;
     font-size: 6mm; font-weight: 900;
     margin-bottom: 3mm;
     display: flex; align-items: center; justify-content: center;
     overflow: hidden; flex-shrink: 0;
   }
-  .pc-cell .bc-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+  .pc-cell .bc-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 2.5mm; }
 
   .pc-cell .bc-name {
     font-size: 11pt; font-weight: 900;
@@ -371,7 +371,7 @@
     gap: 2mm;
   }
 
-  .pc-cell .bc-qr-wrap { padding: 2mm; border-radius: 0; }
+  .pc-cell .bc-qr-wrap { padding: 2mm; border-radius: 3mm; }
   .pc-cell .bc-qr-wrap img {
     width: 26mm !important;
     height: 26mm !important;
