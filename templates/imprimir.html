@@ -5,13 +5,18 @@
   <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
   <title>Imprimir — {{ biz.name }}</title>
   <style>
-    @page { size: A4 portrait; margin: 8mm; }
+    @page { size: A4 portrait; margin: 0; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: white; }
 
     @media print {
       .screen-bar { display: none !important; }
-      .page-wrap { padding: 0 !important; }
+      .page-wrap {
+        padding: 3mm !important;
+        width: 210mm;
+        min-height: 297mm;
+      }
+      .cards-header { display: none !important; }
     }
 
     .screen-bar {
@@ -31,25 +36,27 @@
 
     .page-wrap {
       display: flex; flex-direction: column; align-items: center;
-      padding: 24px 0;
+      padding: 20px;
     }
     .cards-header {
       font-size: 6pt; color: #94a3b8; text-align: center;
       margin-bottom: 4mm; letter-spacing: 0.08em; text-transform: uppercase;
     }
+
     .cards-grid {
       display: grid;
-      grid-template-columns: 96mm 96mm;
-      grid-template-rows: repeat(3, 61mm);
-      gap: 4mm 4mm;
+      grid-template-columns: 101mm 101mm;
+      grid-template-rows: 65mm 65mm 65mm;
+      gap: 1mm;
+      width: 203mm;
     }
 
     .card {
-      width: 96mm; height: 61mm;
+      width: 101mm; height: 65mm;
       border-radius: 4mm;
       overflow: hidden;
       background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%);
-      display: flex; flex-direction: row;
+      display: flex;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
@@ -62,58 +69,58 @@
     }
 
     .logo {
-      width: 10.5mm; height: 10.5mm; border-radius: 2.2mm;
+      width: 15mm; height: 15mm; border-radius: 3mm;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
       display: flex; align-items: center; justify-content: center;
-      font-size: 5mm; font-weight: 900; color: white;
-      margin-bottom: 2mm; overflow: hidden; flex-shrink: 0;
+      font-size: 7.5mm; font-weight: 900; color: white;
+      margin-bottom: 2.5mm; overflow: hidden; flex-shrink: 0;
     }
-    .logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 1.6mm; }
+    .logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 2.2mm; }
 
     .biz-name {
-      font-size: 10.5pt; font-weight: 900; color: white;
+      font-size: 12pt; font-weight: 900; color: white;
       letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1mm;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .biz-cat {
-      display: inline-block; font-size: 5.5pt; font-weight: 700;
+      display: inline-block; font-size: 6pt; font-weight: 700;
       background: rgba(99,102,241,0.25); color: #a5b4fc;
       border: 1px solid rgba(99,102,241,0.35);
       padding: 0.4mm 2mm; border-radius: 3.5mm; margin-bottom: 2.5mm;
     }
 
-    .contacts { display: flex; flex-direction: column; gap: 1.1mm; }
+    .contacts { display: flex; flex-direction: column; gap: 1.3mm; }
     .row {
-      display: flex; align-items: center; gap: 1.5mm;
-      font-size: 6.5pt; color: rgba(255,255,255,0.65);
+      display: flex; align-items: center; gap: 1.6mm;
+      font-size: 7pt; color: rgba(255,255,255,0.65);
       white-space: nowrap; overflow: hidden;
     }
-    .row svg { width: 2.6mm; height: 2.6mm; flex-shrink: 0; opacity: 0.6; }
+    .row svg { width: 2.8mm; height: 2.8mm; flex-shrink: 0; opacity: 0.6; }
 
     .sep {
       width: 0.2mm; background: rgba(255,255,255,0.12);
-      flex-shrink: 0; align-self: center; height: 32%;
+      flex-shrink: 0; align-self: center; height: 30%;
     }
 
     .card-right {
-      width: 29mm; flex-shrink: 0;
-      padding: 5.5mm 5.5mm 5.5mm 3mm;
+      width: 30mm; flex-shrink: 0;
+      padding: 6mm 6mm 6mm 3mm;
       display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 1.6mm;
+      align-items: center; justify-content: center; gap: 1.8mm;
     }
 
     .qr-wrap {
-      background: white; padding: 1.6mm; border-radius: 2.2mm;
-      box-shadow: 0 1.5mm 5mm rgba(0,0,0,0.4);
+      background: white; padding: 1.8mm; border-radius: 2.5mm;
+      box-shadow: 0 1mm 4mm rgba(0,0,0,0.4);
     }
-    .qr-wrap img { width: 20mm; height: 20mm; display: block; }
+    .qr-wrap img { width: 21mm; height: 21mm; display: block; }
 
     .scan-text {
-      font-size: 4.8pt; font-weight: 700;
+      font-size: 5pt; font-weight: 700;
       color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-align: center;
     }
     .brand {
-      font-size: 4.8pt; font-weight: 700;
+      font-size: 5pt; font-weight: 700;
       color: rgba(255,255,255,0.22); letter-spacing: 0.08em;
     }
   </style>
