@@ -165,6 +165,25 @@
 
       <div class="cr-sidebar-section">
         <div class="cr-sidebar-title">Compartir enlace</div>
+
+        <!-- URL personalizada para el QR -->
+        <div style="margin-bottom:0.75rem;">
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.35);margin-bottom:0.4rem;">
+            Enlace del QR <span style="color:rgba(255,255,255,0.2)">(opcional — por defecto va a tu perfil)</span>
+          </div>
+          <div style="display:flex;gap:0.4rem;">
+            <input type="url" id="customUrlInput"
+              placeholder="https://tu-sitio.com"
+              value="{{ custom_url or '' }}"
+              style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:0.55rem 0.75rem;color:white;font-size:0.82rem;font-family:inherit;">
+            <button onclick="saveCustomUrl()" id="saveUrlBtn"
+              style="background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc;border-radius:8px;padding:0.55rem 0.85rem;font-size:0.78rem;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;transition:all 0.2s;">
+              Guardar
+            </button>
+          </div>
+          <div id="urlFeedback" style="font-size:0.72rem;margin-top:0.35rem;min-height:1rem;"></div>
+        </div>
+
         <div class="cr-share-box">
           <input type="text" value="{{ profile_url }}" id="profileUrl" readonly>
           <button onclick="copyLink()" id="copyBtn">
@@ -340,6 +359,39 @@
         toast.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> ¡Enlace copiado! Compártelo para imprimir.';
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
+      });
+    }
+
+    function saveCustomUrl() {
+      const input = document.getElementById('customUrlInput');
+      const btn   = document.getElementById('saveUrlBtn');
+      const fb    = document.getElementById('urlFeedback');
+      const url   = input.value.trim();
+
+      if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+        fb.textContent = 'La URL debe empezar con http:// o https://';
+        fb.style.color = '#f87171';
+        return;
+      }
+
+      btn.textContent = '...';
+      fetch('/card/{{ biz_id }}/set_url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.ok) {
+          fb.textContent = url ? 'Guardado. El QR ahora apunta a tu enlace.' : 'Enlace eliminado. El QR vuelve al perfil.';
+          fb.style.color = '#4ade80';
+          btn.textContent = '✓ Guardado';
+          setTimeout(() => { btn.textContent = 'Guardar'; fb.textContent = ''; }, 3000);
+        } else {
+          fb.textContent = data.error;
+          fb.style.color = '#f87171';
+          btn.textContent = 'Guardar';
+        }
       });
     }
 
