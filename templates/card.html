@@ -418,6 +418,27 @@
       });
     }
 
+    function restoreDefault() {
+      const input = document.getElementById('customUrlInput');
+      const fb    = document.getElementById('urlFeedback');
+      input.value = '';
+      fetch('/card/{{ biz_id }}/set_url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: '' })
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.ok) {
+          fb.textContent = 'Restaurado. El QR vuelve a apuntar a tu perfil.';
+          fb.style.color = '#4ade80';
+          const btn = document.getElementById('restoreBtn');
+          if (btn) btn.remove();
+          setTimeout(() => { fb.textContent = ''; }, 3000);
+        }
+      });
+    }
+
     function copyLink() {
       const input = document.getElementById("profileUrl");
       const btn = document.getElementById("copyBtn");

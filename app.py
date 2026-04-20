@@ -342,9 +342,17 @@ def set_custom_url(biz_id):
     return {"ok": True}
 
 
+@app.route("/scan/<biz_id>")
 def scan(biz_id):
-    """Registra escaneo QR y redirige al perfil"""
+    """Registra escaneo QR y redirige al perfil o custom_url"""
+    businesses = load_businesses()
+    biz = businesses.get(biz_id)
+    if not biz:
+        return redirect(f"https://zuppon.es/p/{biz_id}")
     track(biz_id, "qr_scan")
+    custom_url = biz.get("custom_url", "")
+    if custom_url:
+        return redirect(custom_url)
     return redirect(url_for("profile", biz_id=biz_id))
 
 @app.route("/p/<biz_id>/productos")
