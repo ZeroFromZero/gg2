@@ -29,7 +29,10 @@ def allowed_file(filename):
 def load_businesses():
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE) as f:
-            return json.load(f)
+            try:
+                return json.load(f)
+            except:
+                return {}
     return {}
 
 def save_businesses(data):
