@@ -107,7 +107,7 @@
       <div class="cr-sidebar-section">
         <div class="cr-sidebar-title">Acciones</div>
         <div class="cr-actions">
-          <a href="{{ url_for('imprimir', biz_id=biz_id) }}" class="cr-action-btn primary" target="_blank">
+          <a href="#" onclick="openPrint(event)" class="cr-action-btn primary" target="_blank">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
             Imprimir tarjeta
           </a>
@@ -328,6 +328,13 @@
       document.querySelectorAll('#printGrid .pc').forEach(c => c.className = 'pc bc ' + cls);
       // Guardar en localStorage para que persista al imprimir
       localStorage.setItem('cardTheme', cls);
+    }
+
+    function openPrint(e) {
+      e.preventDefault();
+      const theme = localStorage.getItem('cardTheme') || 'bc-dark';
+      const name = theme.replace('bc-', '');
+      window.open('{{ url_for("imprimir", biz_id=biz_id) }}?theme=' + name, '_blank');
     }
 
     document.querySelectorAll('.theme-btn').forEach(btn => {

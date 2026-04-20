@@ -154,7 +154,8 @@ def imprimir(biz_id):
         return "Negocio no encontrado", 404
     scan_url = f"https://zuppon.es/scan/{biz_id}"
     qr_img = generate_qr(scan_url)
-    return render_template("imprimir.html", biz=biz, biz_id=biz_id, qr_img=qr_img)
+    theme = request.args.get("theme", "dark")
+    return render_template("imprimir.html", biz=biz, biz_id=biz_id, qr_img=qr_img, theme=theme)
 
 @app.route("/print/<biz_id>")
 def print_public(biz_id):

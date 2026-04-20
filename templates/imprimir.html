@@ -55,7 +55,19 @@
       width: 101mm; height: 65mm;
       border-radius: 0;
       overflow: hidden;
+      {% if theme == 'light' %}
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+      {% elif theme == 'violet' %}
+      background: linear-gradient(135deg, #2e1065 0%, #4c1d95 50%, #3b0764 100%);
+      {% elif theme == 'ocean' %}
+      background: linear-gradient(135deg, #0c4a6e 0%, #075985 50%, #0c4a6e 100%);
+      {% elif theme == 'forest' %}
+      background: linear-gradient(135deg, #14532d 0%, #166534 50%, #14532d 100%);
+      {% elif theme == 'rose' %}
+      background: linear-gradient(135deg, #881337 0%, #9f1239 50%, #881337 100%);
+      {% else %}
       background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%);
+      {% endif %}
       display: flex;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
@@ -78,27 +90,37 @@
     .logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 2.2mm; }
 
     .biz-name {
-      font-size: 12pt; font-weight: 900; color: white;
+      font-size: 12pt; font-weight: 900;
+      {% if theme == 'light' %}color: #0f172a;{% else %}color: white;{% endif %}
       letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1mm;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .biz-cat {
       display: inline-block; font-size: 6pt; font-weight: 700;
-      background: rgba(99,102,241,0.25); color: #a5b4fc;
-      border: 1px solid rgba(99,102,241,0.35);
+      {% if theme == 'light' %}
+      background: #ede9fe; color: #6366f1; border: 1px solid #ddd6fe;
+      {% elif theme == 'ocean' %}
+      background: rgba(56,189,248,0.2); color: #7dd3fc; border: 1px solid rgba(56,189,248,0.3);
+      {% elif theme == 'forest' %}
+      background: rgba(74,222,128,0.15); color: #86efac; border: 1px solid rgba(74,222,128,0.25);
+      {% elif theme == 'rose' %}
+      background: rgba(251,113,133,0.2); color: #fda4af; border: 1px solid rgba(251,113,133,0.3);
+      {% else %}
+      background: rgba(99,102,241,0.25); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.35);
+      {% endif %}
       padding: 0.4mm 2mm; border-radius: 3.5mm; margin-bottom: 2.5mm;
     }
 
     .contacts { display: flex; flex-direction: column; gap: 1.3mm; }
     .row {
       display: flex; align-items: center; gap: 1.6mm;
-      font-size: 7pt; color: rgba(255,255,255,0.65);
+      font-size: 7pt; color: {% if theme == 'light' %}#475569{% else %}rgba(255,255,255,0.65){% endif %};
       white-space: nowrap; overflow: hidden;
     }
     .row svg { width: 2.8mm; height: 2.8mm; flex-shrink: 0; opacity: 0.6; }
 
     .sep {
-      width: 0.2mm; background: rgba(255,255,255,0.12);
+      width: 0.2mm; background: {% if theme == 'light' %}#e2e8f0{% else %}rgba(255,255,255,0.12){% endif %};
       flex-shrink: 0; align-self: center; height: 30%;
     }
 
@@ -117,11 +139,11 @@
 
     .scan-text {
       font-size: 5pt; font-weight: 700;
-      color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-align: center;
+      color: {% if theme == 'light' %}#94a3b8{% else %}rgba(255,255,255,0.4){% endif %}; letter-spacing: 0.1em; text-align: center;
     }
     .brand {
       font-size: 5pt; font-weight: 700;
-      color: rgba(255,255,255,0.22); letter-spacing: 0.08em;
+      color: {% if theme == 'light' %}#cbd5e1{% else %}rgba(255,255,255,0.22){% endif %}; letter-spacing: 0.08em;
     }
   </style>
 </head>
