@@ -181,6 +181,12 @@
               Guardar
             </button>
           </div>
+          {% if custom_url %}
+          <button onclick="restoreDefault()" id="restoreBtn"
+            style="margin-top:0.4rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#f87171;border-radius:8px;padding:0.4rem 0.75rem;font-size:0.72rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all 0.2s;">
+            ✕ Restaurar enlace de perfil por defecto
+          </button>
+          {% endif %}
           <div id="urlFeedback" style="font-size:0.72rem;margin-top:0.35rem;min-height:1rem;"></div>
         </div>
 

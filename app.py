@@ -152,8 +152,9 @@ def imprimir(biz_id):
     biz = businesses.get(biz_id)
     if not biz:
         return "Negocio no encontrado", 404
-    scan_url = f"https://zuppon.es/scan/{biz_id}"
-    qr_img = generate_qr(scan_url)
+    custom_url = biz.get("custom_url", "")
+    qr_target = custom_url if custom_url else f"https://zuppon.es/scan/{biz_id}"
+    qr_img = generate_qr(qr_target)
     theme = request.args.get("theme", "dark")
     return render_template("imprimir.html", biz=biz, biz_id=biz_id, qr_img=qr_img, theme=theme)
 
