@@ -315,9 +315,19 @@
       rose:   'bc-rose',
     };
 
+    // Restaurar tema guardado
+    const savedTheme = localStorage.getItem('cardTheme') || 'bc-dark';
+    applyTheme(savedTheme);
+    const savedKey = Object.keys(themes).find(k => themes[k] === savedTheme) || 'dark';
+    document.querySelectorAll('.theme-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.theme === savedKey);
+    });
+
     function applyTheme(cls) {
       document.getElementById('businessCard').className = 'bc ' + cls;
       document.querySelectorAll('#printGrid .pc').forEach(c => c.className = 'pc bc ' + cls);
+      // Guardar en localStorage para que persista al imprimir
+      localStorage.setItem('cardTheme', cls);
     }
 
     document.querySelectorAll('.theme-btn').forEach(btn => {

@@ -380,6 +380,61 @@
   .pc-cell .bc-scan  { font-size: 5.5pt; font-weight: 800; letter-spacing: 0.16em; }
   .pc-cell .bc-brand { font-size: 5.5pt; font-weight: 700; opacity: 0.35; letter-spacing: 0.06em; }
 
+  /* Temas en impresión — forzar colores */
+  .pc-cell .bc-dark  { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%) !important; }
+  .pc-cell .bc-dark .bc-logo  { background: linear-gradient(135deg, #6366f1, #8b5cf6) !important; color: white !important; }
+  .pc-cell .bc-dark .bc-name  { color: white !important; }
+  .pc-cell .bc-dark .bc-cat   { background: rgba(99,102,241,0.25) !important; color: #a5b4fc !important; }
+  .pc-cell .bc-dark .bc-row   { color: rgba(255,255,255,0.65) !important; }
+  .pc-cell .bc-dark .bc-qr-wrap { background: white !important; }
+  .pc-cell .bc-dark .bc-scan  { color: rgba(255,255,255,0.4) !important; }
+  .pc-cell .bc-dark .bc-brand { color: white !important; }
+
+  .pc-cell .bc-light { background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important; }
+  .pc-cell .bc-light .bc-logo { background: linear-gradient(135deg, #6366f1, #8b5cf6) !important; color: white !important; }
+  .pc-cell .bc-light .bc-name { color: #0f172a !important; }
+  .pc-cell .bc-light .bc-cat  { background: #ede9fe !important; color: #6366f1 !important; }
+  .pc-cell .bc-light .bc-row  { color: #475569 !important; }
+  .pc-cell .bc-light .bc-qr-wrap { background: #f8fafc !important; border: 2px solid #e2e8f0 !important; }
+  .pc-cell .bc-light .bc-scan { color: #94a3b8 !important; }
+  .pc-cell .bc-light .bc-brand { color: #0f172a !important; }
+
+  .pc-cell .bc-violet { background: linear-gradient(135deg, #2e1065 0%, #4c1d95 50%, #3b0764 100%) !important; }
+  .pc-cell .bc-violet .bc-logo { background: rgba(255,255,255,0.15) !important; color: white !important; }
+  .pc-cell .bc-violet .bc-name { color: white !important; }
+  .pc-cell .bc-violet .bc-cat  { background: rgba(255,255,255,0.12) !important; color: #e9d5ff !important; }
+  .pc-cell .bc-violet .bc-row  { color: rgba(255,255,255,0.65) !important; }
+  .pc-cell .bc-violet .bc-qr-wrap { background: white !important; }
+  .pc-cell .bc-violet .bc-scan { color: rgba(255,255,255,0.4) !important; }
+  .pc-cell .bc-violet .bc-brand { color: white !important; }
+
+  .pc-cell .bc-ocean { background: linear-gradient(135deg, #0c4a6e 0%, #075985 50%, #0c4a6e 100%) !important; }
+  .pc-cell .bc-ocean .bc-logo { background: rgba(255,255,255,0.15) !important; color: white !important; }
+  .pc-cell .bc-ocean .bc-name { color: white !important; }
+  .pc-cell .bc-ocean .bc-cat  { background: rgba(56,189,248,0.2) !important; color: #7dd3fc !important; }
+  .pc-cell .bc-ocean .bc-row  { color: rgba(255,255,255,0.65) !important; }
+  .pc-cell .bc-ocean .bc-qr-wrap { background: white !important; }
+  .pc-cell .bc-ocean .bc-scan { color: rgba(255,255,255,0.4) !important; }
+  .pc-cell .bc-ocean .bc-brand { color: white !important; }
+
+  .pc-cell .bc-forest { background: linear-gradient(135deg, #14532d 0%, #166534 50%, #14532d 100%) !important; }
+  .pc-cell .bc-forest .bc-logo { background: rgba(255,255,255,0.15) !important; color: white !important; }
+  .pc-cell .bc-forest .bc-name { color: white !important; }
+  .pc-cell .bc-forest .bc-cat  { background: rgba(74,222,128,0.15) !important; color: #86efac !important; }
+  .pc-cell .bc-forest .bc-row  { color: rgba(255,255,255,0.65) !important; }
+  .pc-cell .bc-forest .bc-qr-wrap { background: white !important; }
+  .pc-cell .bc-forest .bc-scan { color: rgba(255,255,255,0.4) !important; }
+  .pc-cell .bc-forest .bc-brand { color: white !important; }
+
+  .pc-cell .bc-rose { background: linear-gradient(135deg, #881337 0%, #9f1239 50%, #881337 100%) !important; }
+  .pc-cell .bc-rose .bc-logo { background: rgba(255,255,255,0.15) !important; color: white !important; }
+  .pc-cell .bc-rose .bc-name { color: white !important; }
+  .pc-cell .bc-rose .bc-cat  { background: rgba(251,113,133,0.2) !important; color: #fda4af !important; }
+  .pc-cell .bc-rose .bc-row  { color: rgba(255,255,255,0.65) !important; }
+  .pc-cell .bc-rose .bc-qr-wrap { background: white !important; }
+  .pc-cell .bc-rose .bc-scan { color: rgba(255,255,255,0.4) !important; }
+  .pc-cell .bc-rose .bc-brand { color: white !important; }
+
   @page { size: letter portrait; margin: 0; }
 }
 
