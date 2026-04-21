@@ -11,7 +11,7 @@
     body { font-family: 'Inter', sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; }
 
     .nav {
-      background: linear-gradient(135deg, #1e40af, #2563eb);
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
       padding: 0 72px; height: 80px;
       display: flex; align-items: center; justify-content: space-between;
     }
@@ -91,12 +91,14 @@
 </head>
 <body>
 
-  <nav class="nav">
-    <a href="/" class="nav-brand">
-      <img src="/static/zuppon_logo.png" alt="Zuppon">
-      <span>Zuppon</span>
+  <nav style="background:linear-gradient(135deg,#0284c7,#0ea5e9);padding:0 72px;height:100px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(2,132,199,0.3);">
+    <a href="/" style="display:flex;align-items:center;gap:16px;text-decoration:none;">
+      <img src="/static/logo.jpeg" alt="Zuppon" style="height:62px;object-fit:contain;">
+      <span style="font-size:30px;font-weight:800;color:#fff;letter-spacing:-0.5px;">Zuppon</span>
     </a>
-    <a href="javascript:window.close()" class="nav-back">✕ Cerrar</a>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <a href="javascript:window.close()" style="background:#fff;color:#0ea5e9;padding:10px 24px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;">✕ Cerrar</a>
+    </div>
   </nav>
 
   <div class="page">
@@ -220,3 +222,4 @@
 
 </body>
 </html>
+

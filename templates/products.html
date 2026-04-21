@@ -101,17 +101,16 @@
 </head>
 <body>
 
-  <nav class="nav">
-    <a href="/" class="nav-brand">
-      <div class="nav-brand-icon">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
-      </div>
-      QRCard
+  <nav style="background:linear-gradient(135deg,#0284c7,#0ea5e9);padding:0 72px;height:100px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(2,132,199,0.3);">
+    <a href="/" style="display:flex;align-items:center;gap:16px;text-decoration:none;">
+      <img src="/static/logo.jpeg" alt="Zuppon" style="height:62px;object-fit:contain;">
+      <span style="font-size:30px;font-weight:800;color:#fff;letter-spacing:-0.5px;">Zuppon</span>
     </a>
-    <a href="{{ url_for('card', biz_id=biz_id) }}" class="nav-back">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-      Volver a mi tarjeta
-    </a>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <a href="/negocios" style="color:rgba(255,255,255,0.85);font-size:15px;font-weight:500;padding:10px 18px;border-radius:8px;text-decoration:none;">Directorio</a>
+      <a href="{{ url_for('card', biz_id=biz_id) }}" style="color:rgba(255,255,255,0.85);font-size:15px;font-weight:500;padding:10px 18px;border-radius:8px;text-decoration:none;">← Mi tarjeta</a>
+      <a href="/qrcard" style="background:#fff;color:#0ea5e9;padding:10px 24px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;">+ Nueva tarjeta</a>
+    </div>
   </nav>
 
   <div class="page">
@@ -214,4 +213,5 @@
   </script>
 </body>
 </html>
+
 

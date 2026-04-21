@@ -20,16 +20,20 @@
     }
 
     .screen-bar {
-      background: #0f172a; padding: 14px 32px;
+      background: linear-gradient(135deg,#0284c7,#0ea5e9); padding: 0 32px;
+      height: 72px;
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
       position: sticky; top: 0; z-index: 100;
     }
-    .screen-bar-info { font-size: 13px; color: rgba(255,255,255,0.4); font-family: Arial, sans-serif; }
+    .screen-brand { display:flex;align-items:center;gap:12px;text-decoration:none; }
+    .screen-brand img { height:44px;object-fit:contain; }
+    .screen-brand span { font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px; }
+    .screen-bar-info { font-size: 13px; color: rgba(255,255,255,0.7); font-family: Arial, sans-serif; }
     .screen-bar-info strong { color: white; }
     .btn-print {
       display: inline-flex; align-items: center; gap: 8px;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      color: white; border: none; border-radius: 9px;
+      background: #fff; color: #0ea5e9;
+      border: none; border-radius: 9px;
       padding: 10px 22px; font-size: 14px; font-weight: 700;
       font-family: Arial, sans-serif; cursor: pointer;
     }
@@ -151,6 +155,10 @@
 
   <!-- BARRA PANTALLA -->
   <div class="screen-bar">
+    <a href="/" class="screen-brand">
+      <img src="/static/logo.jpeg" alt="Zuppon">
+      <span>Zuppon</span>
+    </a>
     <div class="screen-bar-info">
       Impresión de tarjetas · <strong>{{ biz.name }}</strong> · 6 tarjetas por hoja A4
     </div>
@@ -221,3 +229,4 @@
 
 </body>
 </html>
+
