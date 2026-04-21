@@ -243,8 +243,8 @@ def promo_image(biz_id):
     draw = ImageDraw.Draw(img)
 
     # Fuentes
-    fb = "C:/Windows/Fonts/arialbd.ttf"
-    fr = "C:/Windows/Fonts/arial.ttf"
+    fb = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "fonts", "bold.ttf")
+    fr = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "fonts", "regular.ttf")
     try:
         f_huge  = ImageFont.truetype(fb, 110)
         f_big   = ImageFont.truetype(fb, 52)
