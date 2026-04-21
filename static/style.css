@@ -146,23 +146,21 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 .phone-contact-item { width: 100%; height: 28px; background: var(--bg); border-radius: 8px; border: 1px solid var(--border); }
 
 /* ── HOW IT WORKS ───────────────────────────── */
-.how-section { background: var(--bg); padding: 5rem 2rem; border-bottom: 1px solid var(--border); }
+.how-section { background: #0a0d16; padding: 5rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .how-inner { max-width: 860px; margin: 0 auto; text-align: center; }
-.section-label {
-  display: inline-block;
-  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.12em; color: var(--accent);
-  background: var(--accent-light); padding: 0.3rem 0.9rem;
-  border-radius: 20px; margin-bottom: 1rem;
-}
-.how-inner h2 { font-size: 2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.03em; margin-bottom: 3rem; }
+.how-inner h2 { font-size: 2rem; font-weight: 800; color: #fff; letter-spacing: -0.03em; margin-bottom: 3rem; }
 .steps { display: flex; align-items: flex-start; justify-content: center; gap: 1rem; }
 .step { flex: 1; max-width: 220px; text-align: center; }
-.step-num { font-size: 0.72rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+.step-num { font-size: 0.72rem; font-weight: 700; color: #818cf8; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
 .step-icon { font-size: 2rem; margin-bottom: 0.75rem; }
-.step h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
-.step p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
-.step-arrow { font-size: 1.5rem; color: var(--border); margin-top: 2.5rem; flex-shrink: 0; }
+.step h3 { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+.step p { font-size: 0.85rem; color: rgba(255,255,255,0.4); line-height: 1.6; }
+.step-arrow { font-size: 1.5rem; color: rgba(255,255,255,0.15); margin-top: 2.5rem; flex-shrink: 0; }
+@media (max-width: 640px) {
+  .steps { flex-direction: column; align-items: center; gap: 0.5rem; }
+  .step-arrow { transform: rotate(90deg); margin: 0; }
+  .step { max-width: 100%; }
+}
 
 /* ── FORM SECTION ───────────────────────────── */
 .form-section { padding: 5rem 2rem; }

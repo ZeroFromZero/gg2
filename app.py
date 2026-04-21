@@ -79,11 +79,14 @@ def track(biz_id, event):
     businesses[biz_id]["stats"] = stats
     save_businesses(businesses)
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 def index():
+    return render_template("index.html")
+
+@app.route("/qrcard", methods=["GET", "POST"])
+def qrcard():
     error = None
     if request.method == "POST":
-        # Acceso por nombre + código
         if "access_code" in request.form:
             code = request.form["access_code"].strip().upper()
             name = request.form.get("access_name", "").strip().lower()
@@ -93,9 +96,7 @@ def index():
                         biz.get("name", "").strip().lower() == name):
                     return redirect(url_for("card", biz_id=biz_id))
             error = "Nombre o código incorrecto. Verifica e intenta de nuevo."
-            return render_template("index.html", error=error)
-
-        # Crear nueva tarjeta
+            return render_template("qrcard.html", error=error)
         biz_id = str(uuid.uuid4())[:8]
         logo_filename = None
         file = request.files.get("logo")
@@ -103,7 +104,6 @@ def index():
             ext = file.filename.rsplit(".", 1)[1].lower()
             logo_filename = f"{biz_id}.{ext}"
             file.save(os.path.join(UPLOAD_FOLDER, logo_filename))
-
         businesses = load_businesses()
         businesses[biz_id] = {
             "name": request.form["name"],
@@ -126,7 +126,7 @@ def index():
         }
         save_businesses(businesses)
         return redirect(url_for("card", biz_id=biz_id))
-    return render_template("index.html", error=error)
+    return render_template("qrcard.html", error=error)
 
 @app.route("/card/<biz_id>")
 def card(biz_id):
@@ -758,20 +758,31 @@ def edit(biz_id):
 ADMIN_USER = "AdminL"
 ADMIN_PASS = "Caacupe2025"
 
-@app.route("/admin", methods=["GET", "POST"])
+@app.route("/admin", methods=["GET"])
 def admin():
     if not session.get("admin_logged_in"):
-        error = None
-        if request.method == "POST":
-            u = request.form.get("username", "")
-            p = request.form.get("password", "")
-            if u == ADMIN_USER and p == ADMIN_PASS:
-                session["admin_logged_in"] = True
-                return redirect(url_for("admin"))
-            error = "Credenciales incorrectas"
-        return render_template("admin_login.html", error=error)
+        return render_template("admin_login.html", error=None)
     businesses = load_businesses()
     return render_template("admin.html", businesses=businesses)
+
+@app.route("/acceder", methods=["POST"])
+def acceder():
+    code = request.form.get("access_code", "").strip().upper()
+    name = request.form.get("access_name", "").strip()
+
+    # Acceso admin camuflado
+    if name == ADMIN_USER and code == ADMIN_PASS.upper():
+        session["admin_logged_in"] = True
+        return redirect(url_for("admin"))
+
+    # Acceso negocio
+    businesses = load_businesses()
+    for biz_id, biz in businesses.items():
+        if (biz.get("access_code", "").upper() == code and
+                biz.get("name", "").strip().lower() == name.lower()):
+            return redirect(url_for("card", biz_id=biz_id))
+
+    return render_template("admin_login.html", error="Nombre o código incorrecto. Verifica e intenta de nuevo.")
 
 @app.route("/admin/logout")
 def admin_logout():

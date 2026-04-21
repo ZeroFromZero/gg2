@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  <title>Crear tarjeta QR — Zuppon</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ css_v }}">
+</head>
+<body>
+
+  <nav style="background:linear-gradient(135deg,#0284c7,#0ea5e9);padding:0 72px;height:100px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(2,132,199,0.3);">
+    <a href="/" style="display:flex;align-items:center;gap:16px;text-decoration:none;">
+      <img src="/static/logo.jpeg" alt="Zuppon" style="height:62px;object-fit:contain;">
+      <span style="font-size:30px;font-weight:800;color:#fff;letter-spacing:-0.5px;">Zuppon</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <a href="/" style="color:rgba(255,255,255,0.85);font-size:15px;font-weight:500;padding:10px 18px;border-radius:8px;text-decoration:none;">← Inicio</a>
+      <a href="/negocios" style="color:rgba(255,255,255,0.85);font-size:15px;font-weight:500;padding:10px 18px;border-radius:8px;text-decoration:none;">Directorio</a>
+      <a href="/admin" style="background:#fff;color:#0ea5e9;padding:10px 24px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;">Ingresar</a>
+    </div>
+  </nav>
+
+  <section class="form-section" style="padding-top:3rem;">
+    <div class="form-section-inner">
+      <div class="form-section-header">
+        <div class="section-label">Empieza ahora</div>
+        <h2>Crea tu catálogo digital</h2>
+        <p>Completa el formulario y obtén tu tarjeta con QR lista para imprimir.</p>
+      </div>
+
+      <!-- ACCESO -->
+      <div class="access-box">
+        <div class="access-box-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          ¿Ya tienes una tarjeta?
+          <a href="/admin" style="margin-left:auto;color:#0ea5e9;font-weight:700;font-size:0.85rem;text-decoration:none;">Ingresar →</a>
+        </div>
+      </div>
+
+      <div class="form-wrapper">
+        <form method="POST" enctype="multipart/form-data">
+
+          <div class="form-block">
+            <div class="form-block-title"><div class="form-block-icon">🖼️</div>Logo del negocio</div>
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('logoInput').click()">
+              <div class="upload-preview" id="uploadPreview">
+                <div class="upload-placeholder">
+                  <div class="upload-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  </div>
+                  <p>Arrastra tu logo aquí o <span>haz clic para subir</span></p>
+                  <small>PNG, JPG, WEBP · Máx. 5MB</small>
+                </div>
+              </div>
+            </div>
+            <input type="file" name="logo" id="logoInput" accept="image/*" style="display:none" onchange="previewImage(event)">
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-title"><div class="form-block-icon">🏢</div>Información principal</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Nombre del negocio <span class="req">*</span></label>
+                <input type="text" name="name" required placeholder="Ej: Panadería El Sol">
+              </div>
+              <div class="form-group">
+                <label>Categoría <span class="req">*</span></label>
+                <select name="category" required>
+                  <option value="" disabled selected>Selecciona una categoría</option>
+                  <option>Restaurante</option><option>Cafetería</option><option>Panadería</option>
+                  <option>Tienda</option><option>Ropería</option><option>Calzado</option>
+                  <option>Supermercado</option><option>Farmacia</option><option>Barbería</option>
+                  <option>Salón de Belleza</option><option>Gimnasio</option><option>Tecnología</option>
+                  <option>Ferretería</option><option>Mueblería</option><option>Joyería</option>
+                  <option>Librería</option><option>Veterinaria</option><option>Clínica</option>
+                  <option>Servicios</option><option>Otro</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Descripción</label>
+              <textarea name="description" placeholder="Cuéntanos brevemente sobre tu negocio..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-title"><div class="form-block-icon">📞</div>Datos de contacto</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Teléfono <span class="req">*</span></label>
+                <div class="input-icon-wrap"><span class="input-icon">📞</span><input type="tel" name="phone" required placeholder="+1 809 000 0000"></div>
+              </div>
+              <div class="form-group">
+                <label>Email <span class="req">*</span></label>
+                <div class="input-icon-wrap"><span class="input-icon">✉️</span><input type="email" name="email" required placeholder="negocio@email.com"></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Dirección <span class="req">*</span></label>
+              <div class="input-icon-wrap"><span class="input-icon">📍</span><input type="text" name="address" required placeholder="Calle, Ciudad, País"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Sitio web</label>
+                <div class="input-icon-wrap"><span class="input-icon">🌐</span><input type="url" name="website" placeholder="https://tunegocio.com"></div>
+              </div>
+              <div class="form-group">
+                <label>Google Maps</label>
+                <div class="input-icon-wrap"><span class="input-icon">📌</span><input type="url" name="maps_url" placeholder="https://maps.app.goo.gl/..."></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-title"><div class="form-block-icon">📲</div>Redes sociales</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Instagram</label>
+                <div class="input-icon-wrap"><span class="input-icon">📸</span><input type="text" name="instagram" placeholder="@tunegocio"></div>
+              </div>
+              <div class="form-group">
+                <label>Facebook</label>
+                <div class="input-icon-wrap"><span class="input-icon">👍</span><input type="text" name="facebook" placeholder="tunegocio"></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>TikTok</label>
+              <div class="input-icon-wrap"><span class="input-icon">🎵</span><input type="text" name="tiktok" placeholder="@tunegocio"></div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-title"><div class="form-block-icon">🔑</div>Tu contraseña de acceso</div>
+            <div class="form-group">
+              <label>Elige una contraseña para volver a tu tarjeta <span class="req">*</span></label>
+              <div class="input-icon-wrap">
+                <span class="input-icon">🔑</span>
+                <input type="text" name="access_code_new" required placeholder="Ej: PIZZA2024" maxlength="20" style="text-transform:uppercase;letter-spacing:0.08em;" oninput="this.value=this.value.toUpperCase()">
+              </div>
+              <small style="color:#94a3b8;font-size:0.78rem;margin-top:0.5rem;display:block;line-height:1.5;">
+                📌 <strong style="color:#e2e8f0;">Guárdalo bien.</strong> Este código es tu contraseña para volver a editar tu tarjeta desde "Ingresar". Sin él no podrás acceder.
+              </small>
+            </div>
+          </div>
+
+          <div class="form-submit">
+            <button type="submit" class="btn btn-primary btn-lg btn-full">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="4" height="4"/></svg>
+              Generar mi tarjeta QR
+            </button>
+            <p class="submit-note">🔒 Gratis · Sin registro · Sin tarjeta de crédito</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="/" class="navbar-brand">
+        <img src="/static/logo.jpeg" alt="Zuppon" style="height:36px;object-fit:contain;">
+        Zuppon
+      </a>
+      <p>© 2026 Zuppon · Tu negocio digital</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('dragover', e => e.preventDefault());
+    document.addEventListener('drop', e => e.preventDefault());
+
+    function previewImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById("uploadPreview").innerHTML = `<img src="${e.target.result}" alt="Logo preview"><button type="button" class="remove-img" onclick="removeImage(event)">✕</button>`;
+        document.getElementById("uploadArea").classList.add("has-image");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeImage(e) {
+      e.stopPropagation();
+      document.getElementById("logoInput").value = "";
+      document.getElementById("uploadPreview").innerHTML = `<div class="upload-placeholder"><div class="upload-icon-wrap"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><p>Arrastra tu logo aquí o <span>haz clic para subir</span></p><small>PNG, JPG, WEBP · Máx. 5MB</small></div>`;
+      document.getElementById("uploadArea").classList.remove("has-image");
+    }
+
+    const uploadArea = document.getElementById('uploadArea');
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); e.stopPropagation(); uploadArea.style.borderColor = 'var(--accent)'; });
+    uploadArea.addEventListener('dragleave', e => { e.preventDefault(); e.stopPropagation(); uploadArea.style.borderColor = ''; });
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault(); e.stopPropagation(); uploadArea.style.borderColor = '';
+      const file = e.dataTransfer.files[0];
+      if (file) { const dt = new DataTransfer(); dt.items.add(file); document.getElementById('logoInput').files = dt.files; previewImage({target:{files:[file]}}); }
+    });
+  </script>
+</body>
+</html>
