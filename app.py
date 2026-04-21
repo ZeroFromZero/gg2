@@ -169,8 +169,209 @@ def print_public(biz_id):
     profile_url = f"https://zuppon.es/p/{biz_id}"
     return render_template("card.html", biz=biz, biz_id=biz_id, qr_img=qr_img, profile_url=profile_url, shared=True)
 
+@app.route("/promo/<biz_id>/select")
+def promo_select(biz_id):
+    businesses = load_businesses()
+    biz = businesses.get(biz_id)
+    if not biz:
+        return "Negocio no encontrado", 404
+    scan_url = f"https://zuppon.es/scan/{biz_id}"
+    qr_img = generate_qr(scan_url)
+    return render_template("promo_select.html", biz=biz, biz_id=biz_id, qr_img=qr_img)
+
 @app.route("/promo/<biz_id>")
 def promo_image(biz_id):
+    businesses = load_businesses()
+    biz = businesses.get(biz_id)
+    if not biz:
+        return "Negocio no encontrado", 404
+
+    style = request.args.get('style', 'dark')
+
+    # Paletas por estilo
+    palettes = {
+        'dark':   {'bg1': (15,23,42),   'bg2': (30,27,75),  'bg3': (15,23,42),  'badge_bg': (37,40,90),   'badge_txt': (165,180,252), 'brand_bg': (5,150,105),  'brand_txt': (255,255,255), 'url_col': (99,102,241)},
+        'ocean':  {'bg1': (12,74,110),  'bg2': (2,132,199), 'bg3': (12,74,110), 'badge_bg': (7,89,133),   'badge_txt': (125,211,252), 'brand_bg': (3,105,161),  'brand_txt': (255,255,255), 'url_col': (56,189,248)},
+        'forest': {'bg1': (20,83,45),   'bg2': (22,163,74), 'bg3': (20,83,45),  'badge_bg': (20,83,45),   'badge_txt': (134,239,172), 'brand_bg': (21,128,61),  'brand_txt': (255,255,255), 'url_col': (74,222,128)},
+        'rose':   {'bg1': (136,19,55),  'bg2': (225,29,72), 'bg3': (136,19,55), 'badge_bg': (136,19,55),  'badge_txt': (253,164,175), 'brand_bg': (159,18,57),  'brand_txt': (255,255,255), 'url_col': (251,113,133)},
+        'gold':   {'bg1': (120,53,15),  'bg2': (217,119,6), 'bg3': (120,53,15), 'badge_bg': (120,53,15),  'badge_txt': (253,230,138), 'brand_bg': (180,83,9),   'brand_txt': (255,255,255), 'url_col': (251,191,36)},
+        'violet': {'bg1': (46,16,101),  'bg2': (124,58,237),'bg3': (46,16,101), 'badge_bg': (55,20,110),  'badge_txt': (233,213,255), 'brand_bg': (109,40,217), 'brand_txt': (255,255,255), 'url_col': (167,139,250)},
+    }
+    p = palettes.get(style, palettes['dark'])
+
+    from PIL import Image, ImageDraw, ImageFont, ImageFilter
+    import textwrap
+
+    W, H = 1080, 1920
+    img = Image.new("RGB", (W, H), p['bg1'])
+    draw = ImageDraw.Draw(img)
+
+    # Fondo degradado
+    for y in range(H):
+        t = y / H
+        mid = 0.5
+        if t < mid:
+            r = int(p['bg1'][0] + (p['bg2'][0]-p['bg1'][0]) * (t/mid))
+            g = int(p['bg1'][1] + (p['bg2'][1]-p['bg1'][1]) * (t/mid))
+            b = int(p['bg1'][2] + (p['bg2'][2]-p['bg1'][2]) * (t/mid))
+        else:
+            r = int(p['bg2'][0] + (p['bg3'][0]-p['bg2'][0]) * ((t-mid)/mid))
+            g = int(p['bg2'][1] + (p['bg3'][1]-p['bg2'][1]) * ((t-mid)/mid))
+            b = int(p['bg2'][2] + (p['bg3'][2]-p['bg2'][2]) * ((t-mid)/mid))
+        draw.line([(0, y), (W, y)], fill=(r, g, b))
+
+    # Glow superior
+    glow = Image.new("RGB", (W, H), (0,0,0))
+    gd = ImageDraw.Draw(glow)
+    for i in range(200, 0, -1):
+        a = int(50*(i/200)**2)
+        gd.ellipse([W//2-i*3, -i*2, W//2+i*3, i*2],
+                   fill=(min(255,p['bg2'][0]+a), min(255,p['bg2'][1]+a), min(255,p['bg2'][2]+a)))
+    glow = glow.filter(ImageFilter.GaussianBlur(50))
+    img = Image.blend(img, glow, 0.5)
+    draw = ImageDraw.Draw(img)
+
+    # Fuentes
+    fb = "C:/Windows/Fonts/arialbd.ttf"
+    fr = "C:/Windows/Fonts/arial.ttf"
+    try:
+        f_name  = ImageFont.truetype(fb, 108)
+        f_med   = ImageFont.truetype(fb, 40)
+        f_small = ImageFont.truetype(fr, 34)
+        f_tiny  = ImageFont.truetype(fr, 28)
+        f_brand = ImageFont.truetype(fb, 48)
+    except:
+        f_name = f_med = f_small = f_tiny = f_brand = ImageFont.load_default()
+
+    # ── Logo del negocio ──
+    logo_size = 200
+    logo_y = 130
+    logo_x = (W - logo_size) // 2
+
+    if biz.get("logo"):
+        logo_path = os.path.join(UPLOAD_FOLDER, biz["logo"])
+        if os.path.exists(logo_path):
+            try:
+                logo_img = Image.open(logo_path).convert("RGBA").resize((logo_size, logo_size), Image.LANCZOS)
+                # Máscara circular
+                mask = Image.new("L", (logo_size, logo_size), 0)
+                ImageDraw.Draw(mask).ellipse([0, 0, logo_size, logo_size], fill=255)
+                # Fondo blanco circular
+                logo_bg = Image.new("RGBA", (logo_size, logo_size), (255,255,255,255))
+                logo_bg.paste(logo_img, mask=logo_img.split()[3] if logo_img.mode == 'RGBA' else None)
+                logo_bg.putalpha(mask)
+                # Borde blanco
+                border = 8
+                draw.ellipse([logo_x-border, logo_y-border, logo_x+logo_size+border, logo_y+logo_size+border],
+                             fill=(255,255,255))
+                img.paste(logo_bg, (logo_x, logo_y), mask)
+                draw = ImageDraw.Draw(img)
+            except:
+                pass
+        else:
+            # Fallback: círculo con inicial
+            draw.ellipse([logo_x, logo_y, logo_x+logo_size, logo_y+logo_size], fill=p['badge_bg'])
+            letter = biz["name"][0].upper()
+            try: lf = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 100)
+            except: lf = ImageFont.load_default()
+            ltw = int(draw.textlength(letter, font=lf))
+            draw.text(((W-ltw)//2, logo_y + (logo_size-100)//2), letter, font=lf, fill=(255,255,255))
+    else:
+        # Sin logo: círculo con inicial
+        draw.ellipse([logo_x, logo_y, logo_x+logo_size, logo_y+logo_size], fill=p['badge_bg'])
+        letter = biz["name"][0].upper()
+        try: lf = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 100)
+        except: lf = ImageFont.load_default()
+        ltw = int(draw.textlength(letter, font=lf))
+        draw.text(((W-ltw)//2, logo_y + (logo_size-100)//2), letter, font=lf, fill=(255,255,255))
+
+    y_start = logo_y + logo_size + 40
+
+    # Badge categoría
+    cat = biz.get("category", "Negocio").upper()
+    bw = int(draw.textlength(cat, font=f_tiny)) + 64
+    bx = (W - bw) // 2
+    draw.rounded_rectangle([bx, y_start, bx+bw, y_start+58], radius=29, fill=p['badge_bg'])
+    tw = int(draw.textlength(cat, font=f_tiny))
+    draw.text(((W-tw)//2, y_start+8), cat, font=f_tiny, fill=p['badge_txt'])
+
+    # Nombre
+    lines = textwrap.wrap(biz["name"], width=12)
+    y = y_start + 80
+    for line in lines[:3]:
+        tw = int(draw.textlength(line, font=f_name))
+        draw.text(((W-tw)//2, y), line, font=f_name, fill=(255,255,255))
+        y += 120
+
+    # Línea decorativa
+    lw = 80
+    draw.rounded_rectangle([(W//2-lw, y+18), (W//2+lw, y+28)], radius=5, fill=p['url_col'])
+    y += 60
+
+    # QR
+    profile_url = f"https://zuppon.es/p/{biz_id}"
+    qr_obj = qrcode.QRCode(box_size=13, border=2)
+    qr_obj.add_data(profile_url)
+    qr_obj.make(fit=True)
+    qr_pil = qr_obj.make_image(fill_color="#0f172a", back_color="white").convert("RGB")
+    qr_size = 480
+    qr_pil = qr_pil.resize((qr_size, qr_size), Image.LANCZOS)
+    pad = 28
+    qr_x = (W - qr_size) // 2
+    qr_y = y
+    draw.rounded_rectangle([qr_x-pad, qr_y-pad, qr_x+qr_size+pad, qr_y+qr_size+pad], radius=28, fill=(255,255,255))
+    img.paste(qr_pil, (qr_x, qr_y))
+    draw = ImageDraw.Draw(img)
+
+    y = qr_y + qr_size + pad + 48
+
+    # Escanea
+    t = "Escanea el QR para visitarnos"
+    tw = int(draw.textlength(t, font=f_small))
+    draw.text(((W-tw)//2, y), t, font=f_small, fill=(148,163,184))
+    y += 52
+
+    # URL
+    url_short = profile_url.replace("https://", "")
+    tw = int(draw.textlength(url_short, font=f_med))
+    draw.text(((W-tw)//2, y), url_short, font=f_med, fill=p['url_col'])
+    y += 70
+
+    # Separador
+    draw.line([(W//2-200, y), (W//2+200, y)], fill=(30,35,60), width=2)
+    y += 36
+
+    # Contacto
+    if biz.get("phone"):
+        t = "📞  " + biz["phone"]
+        tw = int(draw.textlength(t, font=f_small))
+        draw.text(((W-tw)//2, y), t, font=f_small, fill=(203,213,225))
+        y += 52
+    if biz.get("address"):
+        t = "📍  " + biz["address"][:36]
+        tw = int(draw.textlength(t, font=f_small))
+        draw.text(((W-tw)//2, y), t, font=f_small, fill=(203,213,225))
+
+    # Branding
+    brand_y = H - 160
+    btext = "Zuppon"
+    btw = int(draw.textlength(btext, font=f_brand))
+    bpw = btw + 80
+    bpx = (W - bpw) // 2
+    draw.rounded_rectangle([bpx, brand_y, bpx+bpw, brand_y+76], radius=38, fill=p['brand_bg'])
+    draw.text(((W-btw)//2, brand_y+10), btext, font=f_brand, fill=p['brand_txt'])
+    sub = "Tu negocio digital"
+    stw = int(draw.textlength(sub, font=f_tiny))
+    draw.text(((W-stw)//2, brand_y+90), sub, font=f_tiny, fill=(52,211,153))
+
+    buf = io.BytesIO()
+    img.save(buf, format="PNG", optimize=True)
+    buf.seek(0)
+    response = make_response(buf.read())
+    response.headers["Content-Type"] = "image/png"
+    safe_name = biz["name"].replace(" ", "_")
+    response.headers["Content-Disposition"] = f'attachment; filename="{safe_name}_promo_{style}.png"'
+    return response
     businesses = load_businesses()
     biz = businesses.get(biz_id)
     if not biz:
@@ -342,6 +543,11 @@ def set_custom_url(biz_id):
     return {"ok": True}
 
 
+@app.route("/negocios")
+def negocios():
+    businesses = load_businesses()
+    return render_template("negocios.html", businesses=businesses)
+
 @app.route("/scan/<biz_id>")
 def scan(biz_id):
     """Registra escaneo QR y redirige al perfil o custom_url"""
@@ -370,7 +576,9 @@ def profile(biz_id):
     if not biz:
         return "Negocio no encontrado", 404
     track(biz_id, "profile_view")
-    return render_template("profile.html", biz=biz, biz_id=biz_id)
+    # Otros negocios (excluye el actual, máx 6)
+    others = {k: v for k, v in businesses.items() if k != biz_id}
+    return render_template("profile.html", biz=biz, biz_id=biz_id, others=others)
 
 @app.route("/card/<biz_id>/pdf")
 def download_pdf(biz_id):

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  <title>Imagen para estado — {{ biz.name }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; }
+
+    .nav {
+      background: linear-gradient(135deg, #1e40af, #2563eb);
+      padding: 0 72px; height: 80px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .nav-brand img { height: 48px; object-fit: contain; }
+    .nav-brand span { font-size: 22px; font-weight: 800; color: #fff; }
+    .nav-back { color: rgba(255,255,255,0.7); font-size: 14px; text-decoration: none; }
+    .nav-back:hover { color: white; }
+
+    .page { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+    .page-header { margin-bottom: 2.5rem; }
+    .page-header h1 { font-size: 1.6rem; font-weight: 800; color: white; margin-bottom: 0.4rem; }
+    .page-header p { font-size: 0.88rem; color: rgba(255,255,255,0.4); }
+
+    .variants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .variant-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; overflow: hidden;
+      transition: all 0.2s;
+    }
+    .variant-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+
+    .variant-preview {
+      width: 100%; aspect-ratio: 9/16;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 1.5rem; gap: 0.75rem; position: relative; overflow: hidden;
+    }
+
+    .vp-badge {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 4px 12px; border-radius: 20px;
+    }
+    .vp-name { font-size: 1.1rem; font-weight: 900; text-align: center; line-height: 1.2; }
+    .vp-cat { font-size: 0.65rem; font-weight: 600; opacity: 0.6; }
+    .vp-qr {
+      width: 70px; height: 70px; background: white;
+      border-radius: 8px; padding: 6px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .vp-qr img { width: 100%; height: 100%; display: block; }
+    .vp-url { font-size: 0.6rem; opacity: 0.5; }
+    .vp-brand {
+      position: absolute; bottom: 12px;
+      font-size: 0.7rem; font-weight: 800;
+      padding: 5px 16px; border-radius: 20px;
+    }
+
+    .variant-footer {
+      padding: 1rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .variant-name { font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.7); }
+    .btn-dl {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1rem; border-radius: 8px;
+      font-size: 0.78rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s;
+      background: rgba(255,255,255,0.08); color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .btn-dl:hover { background: rgba(255,255,255,0.15); }
+
+    @media (max-width: 640px) {
+      .nav { padding: 0 1rem; }
+      .variants-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/" class="nav-brand">
+      <img src="/static/zuppon_logo.png" alt="Zuppon">
+      <span>Zuppon</span>
+    </a>
+    <a href="javascript:window.close()" class="nav-back">✕ Cerrar</a>
+  </nav>
+
+  <div class="page">
+    <div class="page-header">
+      <h1>Imagen para estado de WhatsApp</h1>
+      <p>Elige un estilo y descárgalo para compartir en tu estado.</p>
+    </div>
+
+    <div class="variants-grid">
+
+      <!-- DARK VIOLET -->
+      <div class="variant-card">
+        <div class="variant-preview" style="background: linear-gradient(160deg, #0f172a 0%, #1e1b4b 60%, #0f172a 100%);">
+          <span class="vp-badge" style="background:rgba(99,102,241,0.2);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3);">{{ biz.category }}</span>
+          <div class="vp-name" style="color:white;">{{ biz.name }}</div>
+          <div class="vp-qr"><img src="data:image/png;base64,{{ qr_img }}" alt="QR"></div>
+          <div class="vp-url" style="color:rgba(255,255,255,0.4);">zuppon.es/p/{{ biz_id }}</div>
+          <div class="vp-brand" style="background:#059669;color:white;">Zuppon</div>
+        </div>
+        <div class="variant-footer">
+          <span class="variant-name">Oscuro Violeta</span>
+          <a href="/promo/{{ biz_id }}?style=dark" class="btn-dl" download>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar
+          </a>
+        </div>
+      </div>
+
+      <!-- OCEAN BLUE -->
+      <div class="variant-card">
+        <div class="variant-preview" style="background: linear-gradient(160deg, #0c4a6e 0%, #0284c7 55%, #0c4a6e 100%);">
+          <span class="vp-badge" style="background:rgba(56,189,248,0.2);color:#7dd3fc;border:1px solid rgba(56,189,248,0.3);">{{ biz.category }}</span>
+          <div class="vp-name" style="color:white;">{{ biz.name }}</div>
+          <div class="vp-qr"><img src="data:image/png;base64,{{ qr_img }}" alt="QR"></div>
+          <div class="vp-url" style="color:rgba(255,255,255,0.4);">zuppon.es/p/{{ biz_id }}</div>
+          <div class="vp-brand" style="background:#0369a1;color:white;">Zuppon</div>
+        </div>
+        <div class="variant-footer">
+          <span class="variant-name">Azul Océano</span>
+          <a href="/promo/{{ biz_id }}?style=ocean" class="btn-dl" download>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar
+          </a>
+        </div>
+      </div>
+
+      <!-- FOREST GREEN -->
+      <div class="variant-card">
+        <div class="variant-preview" style="background: linear-gradient(160deg, #14532d 0%, #16a34a 55%, #14532d 100%);">
+          <span class="vp-badge" style="background:rgba(74,222,128,0.15);color:#86efac;border:1px solid rgba(74,222,128,0.25);">{{ biz.category }}</span>
+          <div class="vp-name" style="color:white;">{{ biz.name }}</div>
+          <div class="vp-qr"><img src="data:image/png;base64,{{ qr_img }}" alt="QR"></div>
+          <div class="vp-url" style="color:rgba(255,255,255,0.4);">zuppon.es/p/{{ biz_id }}</div>
+          <div class="vp-brand" style="background:#15803d;color:white;">Zuppon</div>
+        </div>
+        <div class="variant-footer">
+          <span class="variant-name">Verde Bosque</span>
+          <a href="/promo/{{ biz_id }}?style=forest" class="btn-dl" download>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar
+          </a>
+        </div>
+      </div>
+
+      <!-- ROSE RED -->
+      <div class="variant-card">
+        <div class="variant-preview" style="background: linear-gradient(160deg, #881337 0%, #e11d48 55%, #881337 100%);">
+          <span class="vp-badge" style="background:rgba(251,113,133,0.2);color:#fda4af;border:1px solid rgba(251,113,133,0.3);">{{ biz.category }}</span>
+          <div class="vp-name" style="color:white;">{{ biz.name }}</div>
+          <div class="vp-qr"><img src="data:image/png;base64,{{ qr_img }}" alt="QR"></div>
+          <div class="vp-url" style="color:rgba(255,255,255,0.4);">zuppon.es/p/{{ biz_id }}</div>
+          <div class="vp-brand" style="background:#9f1239;color:white;">Zuppon</div>
+        </div>
+        <div class="variant-footer">
+          <span class="variant-name">Rojo Rosa</span>
+          <a href="/promo/{{ biz_id }}?style=rose" class="btn-dl" download>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar
+          </a>
+        </div>
+      </div>
+
+      <!-- GOLD AMBER -->
+      <div class="variant-card">
+        <div class="variant-preview" style="background: linear-gradient(160deg, #78350f 0%, #d97706 55%, #78350f 100%);">
+          <span class="vp-badge" style="background:rgba(251,191,36,0.2);color:#fde68a;border:1px solid rgba(251,191,36,0.3);">{{ biz.category }}</span>
+          <div class="vp-name" style="color:white;">{{ biz.name }}</div>
+          <div class="vp-qr"><img src="data:image/png;base64,{{ qr_img }}" alt="QR"></div>
+          <div class="vp-url" style="color:rgba(255,255,255,0.4);">zuppon.es/p/{{ biz_id }}</div>
+          <div class="vp-brand" style="background:#b45309;color:white;">Zuppon</div>
+        </div>
+        <div class="variant-footer">
+          <span class="variant-name">Dorado Ámbar</span>
+          <a href="/promo/{{ biz_id }}?style=gold" class="btn-dl" download>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar
+          </a>
+        </div>
+      </div>
+
+      <!-- MIDNIGHT PURPLE -->
+      <div class="variant-card">
+        <div class="variant-preview" style="background: linear-gradient(160deg, #2e1065 0%, #7c3aed 55%, #2e1065 100%);">
+          <span class="vp-badge" style="background:rgba(196,181,253,0.15);color:#e9d5ff;border:1px solid rgba(196,181,253,0.25);">{{ biz.category }}</span>
+          <div class="vp-name" style="color:white;">{{ biz.name }}</div>
+          <div class="vp-qr"><img src="data:image/png;base64,{{ qr_img }}" alt="QR"></div>
+          <div class="vp-url" style="color:rgba(255,255,255,0.4);">zuppon.es/p/{{ biz_id }}</div>
+          <div class="vp-brand" style="background:#6d28d9;color:white;">Zuppon</div>
+        </div>
+        <div class="variant-footer">
+          <span class="variant-name">Violeta Noche</span>
+          <a href="/promo/{{ biz_id }}?style=violet" class="btn-dl" download>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

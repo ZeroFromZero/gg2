@@ -187,7 +187,29 @@
               </div>
               <div class="form-group">
                 <label>Categoría <span class="req">*</span></label>
-                <input type="text" name="category" required placeholder="Ej: Restaurante, Tienda...">
+                <select name="category" required>
+                  <option value="" disabled selected>Selecciona una categoría</option>
+                  <option>Restaurante</option>
+                  <option>Cafetería</option>
+                  <option>Panadería</option>
+                  <option>Tienda</option>
+                  <option>Ropería</option>
+                  <option>Calzado</option>
+                  <option>Supermercado</option>
+                  <option>Farmacia</option>
+                  <option>Barbería</option>
+                  <option>Salón de Belleza</option>
+                  <option>Gimnasio</option>
+                  <option>Tecnología</option>
+                  <option>Ferretería</option>
+                  <option>Mueblería</option>
+                  <option>Joyería</option>
+                  <option>Librería</option>
+                  <option>Veterinaria</option>
+                  <option>Clínica</option>
+                  <option>Servicios</option>
+                  <option>Otro</option>
+                </select>
               </div>
             </div>
             <div class="form-group">
@@ -344,9 +366,12 @@
   </style>
 
   <script>
-    function previewImage(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    // Evitar que el navegador abra la imagen al soltarla fuera del área
+    document.addEventListener('dragover', e => e.preventDefault());
+    document.addEventListener('drop', e => e.preventDefault());
+
+    function handleFile(file) {
+      if (!file || !file.type.startsWith('image/')) return;
       const reader = new FileReader();
       reader.onload = function(e) {
         document.getElementById("uploadPreview").innerHTML = `
@@ -357,6 +382,11 @@
       };
       reader.readAsDataURL(file);
     }
+
+    function previewImage(event) {
+      handleFile(event.target.files[0]);
+    }
+
     function removeImage(e) {
       e.stopPropagation();
       document.getElementById("logoInput").value = "";
@@ -371,6 +401,32 @@
       `;
       document.getElementById("uploadArea").classList.remove("has-image");
     }
+
+    // Drag & drop en el área de upload
+    const uploadArea = document.getElementById('uploadArea');
+    uploadArea.addEventListener('dragover', e => {
+      e.preventDefault(); e.stopPropagation();
+      uploadArea.style.borderColor = 'var(--accent)';
+      uploadArea.style.background = '#f5f3ff';
+    });
+    uploadArea.addEventListener('dragleave', e => {
+      e.preventDefault(); e.stopPropagation();
+      uploadArea.style.borderColor = '';
+      uploadArea.style.background = '';
+    });
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault(); e.stopPropagation();
+      uploadArea.style.borderColor = '';
+      uploadArea.style.background = '';
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        // Asignar al input para que se envíe con el form
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        document.getElementById('logoInput').files = dt.files;
+        handleFile(file);
+      }
+    });
 
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {
