@@ -12,12 +12,12 @@
 
     .nav {
       background: linear-gradient(135deg, #0284c7, #0ea5e9);
-      padding: 0 72px; height: 80px;
+      padding: 0 clamp(1rem,4vw,72px); height: clamp(56px,7vw,80px);
       display: flex; align-items: center; justify-content: space-between;
     }
-    .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
-    .nav-brand img { height: 48px; object-fit: contain; }
-    .nav-brand span { font-size: 22px; font-weight: 800; color: #fff; }
+    .nav-brand { display: flex; align-items: center; gap: clamp(8px,2vw,14px); text-decoration: none; }
+    .nav-brand img { height: clamp(32px,4vw,48px); object-fit: contain; }
+    .nav-brand span { font-size: clamp(16px,2.5vw,22px); font-weight: 800; color: #fff; }
     .nav-back { color: rgba(255,255,255,0.7); font-size: 14px; text-decoration: none; }
     .nav-back:hover { color: white; }
 
@@ -85,19 +85,23 @@
 
     @media (max-width: 640px) {
       .nav { padding: 0 1rem; }
-      .variants-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .variants-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+      .page { padding: 1.5rem 0.75rem 3rem; }
+      .page-header h1 { font-size: 1.2rem; }
+      .variant-footer { padding: 0.75rem; flex-direction: column; gap: 0.5rem; align-items: stretch; }
+      .btn-dl { justify-content: center; }
     }
   </style>
 </head>
 <body>
 
-  <nav style="background:linear-gradient(135deg,#0284c7,#0ea5e9);padding:0 72px;height:100px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(2,132,199,0.3);">
-    <a href="/" style="display:flex;align-items:center;gap:16px;text-decoration:none;">
-      <img src="/static/logo.jpeg" alt="Zuppon" style="height:62px;object-fit:contain;">
-      <span style="font-size:30px;font-weight:800;color:#fff;letter-spacing:-0.5px;">Zuppon</span>
+  <nav style="background:linear-gradient(135deg,#0284c7,#0ea5e9);padding:0 clamp(1rem,4vw,72px);height:clamp(60px,8vw,100px);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(2,132,199,0.3);">
+    <a href="/" style="display:flex;align-items:center;gap:clamp(8px,2vw,16px);text-decoration:none;">
+      <img src="/static/logo.jpeg" alt="Zuppon" style="height:clamp(36px,5vw,62px);object-fit:contain;">
+      <span style="font-size:clamp(18px,3vw,30px);font-weight:800;color:#fff;letter-spacing:-0.5px;">Zuppon</span>
     </a>
-    <div style="display:flex;align-items:center;gap:6px;">
-      <a href="javascript:window.close()" style="background:#fff;color:#0ea5e9;padding:10px 24px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;">✕ Cerrar</a>
+    <div style="display:flex;align-items:center;gap:4px;">
+      <a href="javascript:window.close()" style="background:#fff;color:#0ea5e9;padding:8px 16px;border-radius:8px;font-size:clamp(12px,2vw,15px);font-weight:700;text-decoration:none;">✕ Cerrar</a>
     </div>
   </nav>
 

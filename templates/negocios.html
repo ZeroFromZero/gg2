@@ -14,22 +14,24 @@
     /* NAV */
     nav {
       background: linear-gradient(135deg, #0284c7, #0ea5e9);
-      padding: 0 72px; height: 100px;
+      padding: 0 clamp(1rem,4vw,72px); height: clamp(60px,8vw,100px);
       display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
       box-shadow: 0 4px 20px rgba(37,99,235,0.25);
     }
-    .nav-brand { display: flex; align-items: center; gap: 16px; }
-    .nav-brand img { height: 62px; object-fit: contain; }
-    .nav-brand span { font-size: 30px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
-    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-brand { display: flex; align-items: center; gap: clamp(8px,2vw,16px); }
+    .nav-brand img { height: clamp(36px,5vw,62px); object-fit: contain; }
+    .nav-brand span { font-size: clamp(18px,3vw,30px); font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
     .nav-links a {
-      color: rgba(255,255,255,0.85); font-size: 15px; font-weight: 500;
-      padding: 10px 18px; border-radius: 8px; transition: background 0.15s;
+      color: rgba(255,255,255,0.85); font-size: clamp(12px,2vw,15px); font-weight: 500;
+      padding: 8px 12px; border-radius: 8px; transition: background 0.15s;
     }
     .nav-links a:hover { background: rgba(255,255,255,0.15); color: #fff; }
     .nav-links .btn { background: #fff; color: #0ea5e9; font-weight: 700; }
     .nav-links .btn:hover { background: #eff6ff; }
+    .nav-links .nav-hide-sm { display: none; }
+    @media (min-width:600px) { .nav-links .nav-hide-sm { display: inline; } }
 
     /* HERO */
     .hero {
@@ -182,12 +184,21 @@
     .empty svg { margin: 0 auto 1rem; opacity: 0.15; }
 
     @media (max-width: 640px) {
-      nav { padding: 0 1rem; height: 72px; }
-      .nav-brand span { font-size: 22px; }
-      .nav-brand img { height: 44px; }
-      .hero { padding: 3rem 1rem 2.5rem; }
-      .stats-bar { gap: 24px; }
-      .page-body { padding: 2rem 1rem 4rem; }
+      .hero { padding: 2.5rem 1rem 2rem; }
+      .hero p { font-size: 14px; }
+      .search-wrap { padding: 4px 4px 4px 12px; }
+      .search-wrap input { font-size: 14px; }
+      .page-body { padding: 1.5rem 0.75rem 3rem; }
+      .biz-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .filters-bar { gap: 0.35rem; }
+      .filter-btn { padding: 0.35rem 0.75rem; font-size: 0.72rem; }
+      .biz-cover { height: 100px; }
+      .biz-body { padding: 1.75rem 0.9rem 0.9rem; }
+      .biz-name { font-size: 0.88rem; }
+      .biz-desc { font-size: 0.72rem; -webkit-line-clamp: 1; }
+      .biz-btn { font-size: 0.75rem; padding: 0.55rem; }
+    }
+    @media (max-width: 380px) {
       .biz-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -200,8 +211,8 @@
       <span>Zuppon</span>
     </a>
     <div class="nav-links">
-      <a href="/">Inicio</a>
-      <a href="/qrcard">Tarjeta QR</a>
+      <a href="/" class="nav-hide-sm">Inicio</a>
+      <a href="/qrcard" class="nav-hide-sm">Tarjeta QR</a>
       <a href="/qrcard" class="btn">Crear tarjeta gratis</a>
     </div>
   </nav>

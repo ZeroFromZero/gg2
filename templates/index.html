@@ -10,18 +10,21 @@
 <body>
 
   <!-- NAVBAR -->
-  <nav style="background:linear-gradient(135deg,#0284c7,#0ea5e9);padding:0 72px;height:100px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(2,132,199,0.3);">
-    <a href="/" style="display:flex;align-items:center;gap:16px;text-decoration:none;">
-      <img src="/static/logo.jpeg" alt="Zuppon" style="height:62px;object-fit:contain;">
-      <span style="font-size:30px;font-weight:800;color:#fff;letter-spacing:-0.5px;">Zuppon</span>
+  <nav style="background:linear-gradient(135deg,#0284c7,#0ea5e9);padding:0 clamp(1rem,4vw,72px);height:clamp(60px,8vw,100px);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(2,132,199,0.3);">
+    <a href="/" style="display:flex;align-items:center;gap:clamp(8px,2vw,16px);text-decoration:none;">
+      <img src="/static/logo.jpeg" alt="Zuppon" style="height:clamp(36px,5vw,62px);object-fit:contain;">
+      <span style="font-size:clamp(18px,3vw,30px);font-weight:800;color:#fff;letter-spacing:-0.5px;">Zuppon</span>
     </a>
-    <div style="display:flex;align-items:center;gap:6px;">
-      <a href="#servicios" style="color:rgba(255,255,255,0.85);font-size:15px;font-weight:500;padding:10px 18px;border-radius:8px;text-decoration:none;">Servicios</a>
-      <a href="/negocios" style="color:rgba(255,255,255,0.85);font-size:15px;font-weight:500;padding:10px 18px;border-radius:8px;text-decoration:none;">Directorio</a>
-      <a href="/admin" style="color:rgba(255,255,255,0.85);font-size:15px;font-weight:500;padding:10px 18px;border-radius:8px;text-decoration:none;">Ingresar</a>
-      <a href="/zuppon/register" style="background:#fff;color:#0ea5e9;padding:10px 24px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;">Empezar gratis</a>
+    <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
+      <a href="#servicios" style="color:rgba(255,255,255,0.85);font-size:clamp(12px,2vw,15px);font-weight:500;padding:8px 10px;border-radius:8px;text-decoration:none;display:none;" class="nav-hide-sm">Servicios</a>
+      <a href="/negocios" style="color:rgba(255,255,255,0.85);font-size:clamp(12px,2vw,15px);font-weight:500;padding:8px 10px;border-radius:8px;text-decoration:none;display:none;" class="nav-hide-sm">Directorio</a>
+      <a href="/admin" style="color:rgba(255,255,255,0.85);font-size:clamp(12px,2vw,15px);font-weight:500;padding:8px 10px;border-radius:8px;text-decoration:none;">Ingresar</a>
+      <a href="/zuppon/register" style="background:#fff;color:#0ea5e9;padding:8px 16px;border-radius:8px;font-size:clamp(12px,2vw,15px);font-weight:700;text-decoration:none;">Empezar gratis</a>
     </div>
   </nav>
+  <style>
+    @media (min-width:600px) { .nav-hide-sm { display:inline !important; } }
+  </style>
 
   <!-- HERO -->
   <section class="hero-section" style="background:#0f172a;border-bottom:1px solid rgba(255,255,255,0.06);">
