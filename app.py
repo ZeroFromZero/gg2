@@ -17,7 +17,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 def inject_version():
     import time
     return {'css_v': int(time.time())}
-DATA_FILE = "businesses.json"
+DATA_FILE = "/var/data/businesses.json"
 UPLOAD_FOLDER = os.path.join("static", "uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif"}
 
