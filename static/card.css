@@ -528,3 +528,64 @@
 }
 .wa-promo-btn:hover { background: #1ebe5d; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(37,211,102,0.4); }
 
+
+/* ── MOBILE / ANDROID ───────────────────────── */
+@media (max-width: 640px) {
+  /* Navbar */
+  .card-result-page .navbar { padding: 0 1rem; height: 52px; }
+  .card-result-page .navbar-brand { font-size: 0.9rem; }
+  .card-result-page .navbar-links { gap: 0.25rem; }
+  .card-result-page .nav-link { font-size: 0.75rem; padding: 0.35rem 0.5rem; }
+  .card-result-page .btn-sm-primary { font-size: 0.75rem; padding: 0.4rem 0.7rem; }
+
+  /* Success banner */
+  .success-banner { padding: 0.6rem 1rem; }
+  .success-banner-inner { gap: 0.6rem; }
+  .success-banner-inner strong { font-size: 0.82rem; }
+  .success-banner-inner span { display: none; }
+
+  /* Layout: sidebar arriba, preview abajo */
+  .cr-layout { grid-template-columns: 1fr; min-height: unset; }
+  .cr-sidebar {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 1.25rem 1rem;
+    gap: 1.25rem;
+  }
+
+  /* Theme grid más grande para tocar */
+  .theme-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+  .theme-btn { padding: 0.7rem 0.3rem; }
+  .theme-preview { height: 32px; }
+  .theme-btn span { font-size: 0.7rem; }
+
+  /* Acciones en 2 columnas */
+  .cr-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .cr-action-btn { padding: 0.65rem 0.6rem; font-size: 0.78rem; justify-content: center; }
+
+  /* Stats */
+  .cr-stats { grid-template-columns: 1fr 1fr; }
+  .cr-stat-val { font-size: 1.3rem; }
+
+  /* Share box */
+  .cr-share-box input { font-size: 0.72rem; }
+  .cr-share-links { flex-wrap: wrap; }
+
+  /* Preview */
+  .cr-preview { padding: 1.25rem 0.75rem; }
+  .cr-preview-label { font-size: 0.65rem; }
+
+  /* Card component */
+  .bc-inner { flex-direction: column; }
+  .bc-left { padding: 1.5rem 1.5rem 0.75rem; }
+  .bc-sep { width: 80%; height: 1px; margin: 0 auto; }
+  .bc-right { padding: 0.75rem 1.5rem 1.5rem; }
+  .bc-name { font-size: 1.1rem; }
+  .bc-qr-wrap img { width: 80px; height: 80px; }
+
+  /* WA promo */
+  .wa-promo { padding: 1rem; }
+  .wa-promo-inner { flex-direction: column; }
+  .wa-promo-copy { width: 100%; justify-content: center; }
+  .wa-promo-btn { width: 100%; justify-content: center; }
+}

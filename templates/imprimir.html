@@ -20,15 +20,16 @@
     }
 
     .screen-bar {
-      background: linear-gradient(135deg,#0284c7,#0ea5e9); padding: 0 32px;
-      height: 72px;
+      background: linear-gradient(135deg,#0284c7,#0ea5e9); padding: 0 1rem;
+      height: 60px;
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
       position: sticky; top: 0; z-index: 100;
     }
-    .screen-brand { display:flex;align-items:center;gap:12px;text-decoration:none; }
-    .screen-brand img { height:44px;object-fit:contain; }
-    .screen-brand span { font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px; }
-    .screen-bar-info { font-size: 13px; color: rgba(255,255,255,0.7); font-family: Arial, sans-serif; }
+    .screen-brand { display:flex;align-items:center;gap:10px;text-decoration:none; }
+    .screen-brand img { height:36px;object-fit:contain; }
+    .screen-brand span { font-size:clamp(16px,3vw,22px);font-weight:800;color:#fff;letter-spacing:-0.5px; }
+    .screen-bar-info { font-size: 12px; color: rgba(255,255,255,0.7); font-family: Arial, sans-serif; display:none; }
+    @media (min-width:600px) { .screen-bar-info { display:block; } .screen-bar { padding: 0 32px; height: 72px; } .screen-brand img { height:44px; } }
     .screen-bar-info strong { color: white; }
     .btn-print {
       display: inline-flex; align-items: center; gap: 8px;
@@ -36,11 +37,13 @@
       border: none; border-radius: 9px;
       padding: 10px 22px; font-size: 14px; font-weight: 700;
       font-family: Arial, sans-serif; cursor: pointer;
+      white-space: nowrap;
     }
 
     .page-wrap {
       display: flex; flex-direction: column; align-items: center;
       padding: 20px;
+      overflow-x: auto;
     }
     .cards-header {
       font-size: 6pt; color: #94a3b8; text-align: center;
@@ -53,6 +56,26 @@
       grid-template-rows: 65mm 65mm 65mm;
       gap: 1mm;
       width: 203mm;
+    }
+
+    @media (max-width: 480px) {
+      .page-wrap { padding: 12px; }
+      .cards-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: unset;
+        width: 100%;
+        gap: 8px;
+      }
+      .card {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 120px;
+      }
+      .card-left { padding: 12px 10px 12px 14px; }
+      .card-right { width: 80px; padding: 10px; }
+      .qr-wrap img { width: 16mm; height: 16mm; }
+      .biz-name { font-size: 10pt; }
+      .btn-print { padding: 8px 14px; font-size: 13px; }
     }
 
     .card {

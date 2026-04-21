@@ -61,6 +61,18 @@
     .empty p { font-size: 0.85rem; color: rgba(255,255,255,0.35); margin-bottom: 1.5rem; }
     .btn-create { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 0.75rem 1.5rem; border-radius: 11px; font-size: 0.88rem; font-weight: 700; transition: all 0.2s; }
     .btn-create:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99,102,241,0.4); }
+
+    @media (max-width: 640px) {
+      .nav { padding: 0 1rem; height: 52px; }
+      .nav-brand { font-size: 0.9rem; }
+      .nav-back { font-size: 0.75rem; }
+      .page-header { padding: 1.25rem 1rem 1rem; }
+      .page-title { font-size: 1.2rem; }
+      .grid { padding: 0 0.75rem 3rem; grid-template-columns: 1fr; }
+      .biz-card-footer { flex-wrap: wrap; }
+      .btn-view, .btn-card { font-size: 0.75rem; padding: 0.5rem; }
+      .biz-stat-val { font-size: 1.1rem; }
+    }
   </style>
 </head>
 <body>
